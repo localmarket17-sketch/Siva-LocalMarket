@@ -1,0 +1,134 @@
+/* Inventory.css */
+
+.admin-dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-dashboard-layout .p-6 {
+  flex: 1;
+  padding: 2rem;
+  background-color: #ffffff;
+  overflow-x: auto;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #334155;
+}
+
+.text-red-500 {
+  color: #ef4444;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  min-width: 700px;
+  font-size: 0.95rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+thead {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Delete button */
+button {
+  cursor: pointer;
+}
+
+button.bg-red-500 {
+  background-color: #ef4444;
+}
+
+button.bg-red-500:hover {
+  background-color: #dc2626;
+}
+
+button.bg-blue-600 {
+  background-color: #2563eb;
+}
+
+button.bg-blue-600:hover {
+  background-color: #1d4ed8;
+}
+
+/* Add inventory form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+}
+
+input[type="text"],
+input[type="number"] {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .admin-dashboard-layout {
+    flex-direction: column;
+  }
+
+  .admin-dashboard-layout .p-6 {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+    min-width: 100%;
+  }
+
+  input,
+  button {
+    font-size: 0.9rem;
+  }
+
+  form {
+    width: 100%;
+  }
+}

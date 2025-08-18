@@ -1,0 +1,209 @@
+/* Layout */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 600px) 1fr; /* 25%-50%-25% */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.checkout-main {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Title */
+.checkout-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+}
+
+/* Section card */
+.checkout-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fafafa;
+}
+
+/* Section heading */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+/* Address */
+.address-display {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 0.6rem;
+}
+
+.address-input {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  margin-bottom: 0.6rem;
+}
+
+/* Buttons */
+.edit-btn,
+.save-btn,
+.back-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.3rem;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover,
+.save-btn:hover,
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+.back-btn {
+  background: transparent;
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 1rem;
+  border: none;
+}
+
+/* Payment options */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.payment-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Card details */
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.card-details input {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* UPI Section */
+.upi-section {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.upi-id {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+/* Order Summary */
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.05rem;
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 0.8rem;
+}
+
+/* Place Order Button */
+.place-order-btn {
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.place-order-btn:hover {
+  background-color: #218838;
+}
+
+/* Mobile Sticky Footer */
+.mobile-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
+  padding: 0.75rem 1rem;
+  z-index: 100;
+}
+
+.mobile-sticky-footer .place-order-btn {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .checkout-layout {
+    display: block;
+    padding: 1rem;
+  }
+
+  .checkout-main {
+    max-width: 100%;
+    padding: 1rem;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .mobile-sticky-footer {
+    padding: 0.75rem;
+  }
+}

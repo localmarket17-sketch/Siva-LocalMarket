@@ -1,0 +1,141 @@
+/* src/pages/user/Profile.css */
+
+.profile-container {
+  max-width: 800px;
+  margin: 100px auto 40px; /* ⬅️ Push below navbar */
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.profile-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.profile-section {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-section h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.profile-info label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #555;
+}
+
+.profile-info input,
+.profile-info textarea {
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.profile-info input:focus,
+.profile-info textarea:focus {
+  border-color: #007bff;
+}
+
+.profile-info p {
+  font-size: 15px;
+  color: #222;
+  margin: 4px 0 0 0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.edit-btn,
+.save-btn,
+.action-buttons button {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover,
+.save-btn:hover,
+.action-buttons button:hover {
+  background-color: #0056b3;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Reward section */
+.profile-section p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.profile-section strong {
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Footer-safe spacing (in case of sticky footer) */
+body {
+  padding-bottom: 60px; /* adjust if footer is fixed/sticky */
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .profile-container {
+    margin-top: 80px;
+    padding: 16px;
+  }
+
+  .profile-title {
+    font-size: 24px;
+  }
+
+  .profile-section h3 {
+    font-size: 18px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .edit-btn,
+  .save-btn,
+  .action-buttons button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,95 @@
+/* src/pages/delivery/AssignedDeliveries.css */
+
+.assigned-deliveries-layout {
+  display: flex;
+}
+
+.assigned-deliveries-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #1f2937;
+}
+
+.status-message {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+
+.delivery-cards {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.delivery-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.order-id {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.status-tag {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 4px;
+  text-transform: capitalize;
+}
+
+.status-tag.assigned {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-tag.out-for-delivery {
+  background-color: #fef08a;
+  color: #b45309;
+}
+
+.status-tag.delivered {
+  background-color: #bbf7d0;
+  color: #15803d;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-out {
+  background-color: #facc15;
+  color: #000;
+}
+
+.btn-delivered {
+  background-color: #22c55e;
+  color: white;
+}

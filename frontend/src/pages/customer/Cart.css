@@ -1,0 +1,262 @@
+/* === 3-COLUMN PAGE LAYOUT === */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* 25% - 50% - 25% */
+  padding: 1rem 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff;
+}
+
+/* === CENTER COLUMN CONTAINER === */
+.cart-inner-wrapper {
+  grid-column: 2; /* Use center column */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* === Heading and Explore More Link === */
+.cart-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-heading {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.explore-link {
+  font-size: 0.95rem;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* === Layout for cart content on desktop === */
+.cart-content.desktop {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+/* === Layout for cart content on mobile === */
+.cart-content.mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* === CART ITEMS GRID === */
+.cart-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* === INDIVIDUAL ITEM CARD === */
+.cart-item-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-card.selected {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.cart-item-card img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.cart-item-card .details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.cart-item-card .details h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.cart-item-card .details p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* === FLEX ROW for price/qty/remove === */
+.info-pair {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* === QTY CONTROLS === */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-controls button {
+  background-color: #e0f3ff;
+  border: none;
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.qty-controls button:hover {
+  background-color: #cde6ff;
+}
+
+.qty-controls span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* === DELETE BUTTON === */
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  padding: 0;
+  text-align: left;
+}
+
+/* === CART SUMMARY BOX (Desktop) === */
+.cart-summary-box {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.cart-summary-box h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkout-btn:disabled,
+.pay-btn:disabled {
+  background-color: #007bff80;
+  cursor: not-allowed;
+}
+
+/* === MOBILE STICKY FOOTER === */
+.mobile-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  padding: 0;
+  gap: 0;
+  z-index: 100;
+}
+
+.mobile-sticky-footer .pay-btn,
+.mobile-sticky-footer .explore-btn {
+  flex: 1;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* === EMPTY CART STYLES === */
+.auth-error-box {
+  text-align: center;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+}
+
+.auth-error-image {
+  max-width: 240px;
+  margin: auto;
+}
+
+.auth-error-title {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.auth-error-subtitle {
+  font-size: 1rem;
+  color: #777;
+  margin-top: 0.4rem;
+}
+
+.auth-error-hint {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.login-link {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.explore-btn {
+  background-color: #f0c14b;
+  color: #111;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}

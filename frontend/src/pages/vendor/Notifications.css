@@ -1,0 +1,48 @@
+.vendor-notifications-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.vendor-notifications-container {
+  flex: 1;
+  padding: 2rem;
+}
+
+.page-heading {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.notification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-item {
+  background-color: #fff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #3b82f6;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: #f0f9ff;
+}
+
+.note-message {
+  font-size: 1rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.note-timestamp {
+  font-size: 0.875rem;
+  color: #6b7280;
+}

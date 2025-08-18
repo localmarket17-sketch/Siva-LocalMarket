@@ -1,0 +1,109 @@
+/* ManageOrders.css */
+
+.admin-dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-dashboard-layout .p-4 {
+  flex: 1;
+  padding: 2rem;
+  background-color: #ffffff;
+  overflow-x: auto;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  min-width: 700px; /* Enable scroll for small screens */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+}
+
+thead {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Dropdown select styling */
+select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+  background-color: #fff;
+}
+
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Button styling */
+button {
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .admin-dashboard-layout {
+    flex-direction: column;
+  }
+
+  .admin-dashboard-layout .p-4 {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  select {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}

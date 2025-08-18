@@ -1,0 +1,85 @@
+/* Profile.css - Main content styling only */
+
+.p-4 {
+  flex: 1;
+  padding: 2rem;
+  background-color: #ffffff;
+}
+
+.p-4 h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.p-4 p {
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+form .block {
+  margin-bottom: 0.25rem;
+  color: #111827;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #f9fafb;
+}
+
+input:focus {
+  border-color: #2563eb;
+  outline: none;
+  background-color: #fff;
+}
+
+button {
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+button.bg-blue-600:hover {
+  background-color: #2563eb;
+}
+
+button.bg-gray-400:hover {
+  background-color: #4b5563;
+}
+
+/* Feedback message */
+.text-blue-600 {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .p-4 {
+    padding: 1rem;
+  }
+
+  .p-4 h2 {
+    font-size: 1.4rem;
+  }
+
+  input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .flex.gap-2 {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

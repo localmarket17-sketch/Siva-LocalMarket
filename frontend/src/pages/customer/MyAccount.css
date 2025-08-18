@@ -1,0 +1,101 @@
+.myaccount-container {
+  max-width: 600px;
+  margin: 100px auto 40px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.myaccount-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.myaccount-section {
+  text-align: left;
+  position: relative;
+  margin-bottom: 20px;
+  line-height: 1.7;
+  color: #444;
+  padding: 0 10px;
+}
+
+.edit-profile {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 14px;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.edit-profile:hover {
+  color: #0056b3;
+}
+
+.myaccount-separator {
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
+.myaccount-actions {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.myaccount-actions button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.myaccount-actions button:last-child {
+  border-bottom: none;
+}
+
+.myaccount-actions button:hover {
+  background-color: #0056b3;
+}
+
+.logout-btn {
+  background-color: #dc3545 !important;
+}
+
+.logout-btn:hover {
+  background-color: #a71d2a !important;
+}
+
+@media (max-width: 768px) {
+  .myaccount-container {
+    margin: 80px 16px;
+    padding: 16px;
+  }
+
+  .myaccount-title {
+    font-size: 22px;
+  }
+
+  .myaccount-actions button {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .edit-profile {
+    font-size: 13px;
+  }
+}

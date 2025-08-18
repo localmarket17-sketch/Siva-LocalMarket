@@ -1,0 +1,181 @@
+/* AddProduct.css */
+
+.add-product-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar styling handled inside Sidebarvd.jsx */
+
+.add-product-container {
+  flex: 1;
+  padding: 2rem;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
+
+.add-product-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.add-product-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.add-product-form input,
+.add-product-form textarea,
+.add-product-form select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  transition: border 0.2s;
+}
+
+.add-product-form input:focus,
+.add-product-form textarea:focus,
+.add-product-form select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #ffffff;
+}
+
+.add-product-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.add-product-form button {
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-product-form button:hover {
+  background-color: #1d4ed8;
+}
+
+.form-message {
+  margin-top: 1rem;
+  font-weight: 500;
+  color: #16a34a;
+}
+
+/* Table for Manage Products */
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.products-table th,
+.products-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.products-table th {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+}
+
+.products-table tr:last-child td {
+  border-bottom: none;
+}
+
+.products-table input[type='number'] {
+  width: 80px;
+  padding: 0.4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+.products-table button {
+  padding: 0.4rem 0.75rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.products-table .edit-btn {
+  background-color: #facc15;
+  color: #1f2937;
+}
+
+.products-table .edit-btn:hover {
+  background-color: #eab308;
+}
+
+.products-table .delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.products-table .delete-btn:hover {
+  background-color: #dc2626;
+}
+
+.products-table .save-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.products-table .save-btn:hover {
+  background-color: #059669;
+}
+
+.products-table .cancel-btn {
+  background-color: #9ca3af;
+  color: white;
+}
+
+.products-table .cancel-btn:hover {
+  background-color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-product-form {
+    grid-template-columns: 1fr;
+  }
+
+  .products-table th,
+  .products-table td {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+
+  .products-table input[type='number'] {
+    width: 60px;
+  }
+
+  .products-table button {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

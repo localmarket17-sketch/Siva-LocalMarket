@@ -1,0 +1,133 @@
+.notification-page {
+  padding-top: 100px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.notification-container {
+  display: flex;
+  max-width: 1200px;
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar {
+  flex: 1;
+  border-right: 1px solid #e5e7eb;
+  padding: 2rem;
+  background-color: #f1f5f9;
+}
+
+.sidebar h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1f2937;
+}
+
+.sidebar p {
+  margin-top: 0.5rem;
+  color: #6b7280;
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: row;
+  flex: 2;
+  padding: 2rem;
+}
+
+.notification-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.notification-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.notification-list li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: #374151;
+}
+
+.notification-list input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+}
+
+.notification-blocked {
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 2rem;
+  color: #dc2626;
+}
+
+.icon-block {
+  background-color: #dc2626;
+  width: 60px;
+  height: 60px;
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1rem auto;
+}
+
+.block-text {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.how-to-unblock {
+  font-size: 0.85rem;
+  color: #10b981;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .notification-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .notification-content {
+    padding: 1.5rem;
+  }
+
+  .notification-list li {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .notification-blocked {
+    padding: 1.5rem 1rem;
+  }
+
+  .icon-block {
+    width: 50px;
+    height: 50px;
+  }
+
+  .block-text {
+    font-size: 0.9rem;
+  }
+
+  .how-to-unblock {
+    font-size: 0.8rem;
+  }
+}

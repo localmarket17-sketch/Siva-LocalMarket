@@ -1,0 +1,169 @@
+.navbar-wrapper {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #111;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Top bar */
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: #111;
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.search-container {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #999;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border-radius: 20px;
+  border: none;
+  background-color: #222;
+  color: white;
+}
+
+.search-bar::placeholder {
+  color: #ccc;
+}
+
+/* Cart & Auth */
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cart-link {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.cart-count {
+  background: red;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.cart-icon-img {
+  width: 24px;
+  margin-right: 8px;
+}
+
+.cart-text {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* Sign In */
+.signin-btn {
+  color: white;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.signin-btn:hover {
+  background-color: #333;
+}
+
+/* User Dropdown */
+.user-dropdown-toggle {
+  cursor: pointer;
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background-color: #222;
+  border: 1px solid #333;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  padding: 10px;
+  z-index: 999;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  color: white;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background-color: #333;
+}
+
+.user-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 6px;
+}
+
+/* Delivery bar */
+.delivery-bar {
+  background-color: #222;
+  color: white;
+  font-size: 0.9rem;
+  padding: 8px 20px;
+  border-top: 1px solid #333;
+  transition: top 0.3s;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .logo,
+  .navbar-icons {
+    display: none;
+  }
+
+  .search-container {
+    width: 100%;
+    margin: 0;
+  }
+
+  .navbar-top {
+    padding: 10px;
+  }
+}

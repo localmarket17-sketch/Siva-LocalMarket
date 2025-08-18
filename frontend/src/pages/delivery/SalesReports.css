@@ -1,0 +1,59 @@
+/* Main page container beside sidebar */
+.deliveryboy-page {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f9fafb;
+  overflow-x: auto;
+}
+
+/* Heading */
+.deliveryboy-page h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+/* Reports table */
+.reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.reports-table th,
+.reports-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.reports-table th {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+}
+
+.reports-table td {
+  color: #4b5563;
+}
+
+.reports-table tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .deliveryboy-page {
+    padding-top: 3.5rem; /* ensure space for toggle vertically */
+    padding-left: 2rem;
+  }
+
+  .reports-table th,
+  .reports-table td {
+    padding: 0.75rem;
+  }
+}

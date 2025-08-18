@@ -1,0 +1,215 @@
+/* src/pages/Shop.css */
+
+.shop-page {
+  background-color: #ffffff;
+  color: #000000;
+  padding-bottom: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Trending Now */
+.trending-now-section {
+  margin: 2rem auto;
+}
+
+.trending-title {
+  color: #111;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-left: 5px;
+}
+
+/* Static Cards Section */
+.static-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.static-card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  background-color: #d1ecf9;
+}
+
+.static-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Banner Carousel Section */
+.banner-carousel {
+  margin: 2rem auto;
+  width: 95%;
+  max-width: 1200px;
+}
+
+.banner-card {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.banner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Top Brands */
+.brand-scroll {
+  margin: 3rem auto;
+}
+
+.brand-scroll h3 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.brand-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.brand-card {
+  flex: 0 0 120px;
+  text-align: center;
+  background-color: #d1ecf9;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.brand-card img {
+  width: 100%;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+/* Subcategories Section */
+.subcategory-section {
+  margin: 3rem auto;
+}
+
+.category-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.category-heading h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.view-all {
+  font-size: 0.9rem;
+  color: #007aff;
+  text-decoration: none;
+}
+
+.subcategory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.subcategory-card {
+  background-color: #d1ecf9;
+  border-radius: 10px;
+  padding: 0.5rem;
+  text-align: center;
+  color: #000;
+  text-decoration: none;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+  transition: transform 0.2s ease;
+}
+
+.subcategory-card:hover {
+  transform: translateY(-4px);
+}
+
+.subcategory-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  /* Static Cards horizontal scroll */
+  .static-cards {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .static-card {
+    flex: 0 0 160px;
+    min-width: 160px;
+  }
+
+  .static-card img {
+    height: 120px;
+  }
+
+  /* Subcategories horizontal scroll */
+  .subcategory-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .subcategory-card {
+    flex: 0 0 140px;
+    min-width: 140px;
+  }
+
+  .subcategory-card img {
+    height: 80px;
+  }
+
+  .banner-card {
+    height: 140px;
+  }
+}
+
+/* Hide Scrollbars */
+.static-cards::-webkit-scrollbar,
+.subcategory-grid::-webkit-scrollbar,
+.brand-row::-webkit-scrollbar {
+  display: none;
+}
+
+.static-cards,
+.subcategory-grid,
+.brand-row {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
