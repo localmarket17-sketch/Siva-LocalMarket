@@ -9,7 +9,6 @@ import {
   Home,
   List,
   ShoppingCart,
-  Percent,
   User,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -28,7 +27,6 @@ const Footer = () => {
     const checkScreen = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-
     checkScreen();
     window.addEventListener('resize', checkScreen);
     return () => window.removeEventListener('resize', checkScreen);
@@ -37,17 +35,23 @@ const Footer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
         const [catRes, brandRes] = await Promise.all([
-          axios.get('/api/categories'),
-          axios.get('/api/brands'),
+          axios.get(`${API_BASE}/categories`),
+          axios.get(`${API_BASE}/brands`),
         ]);
-        setCategories(catRes.data);
-        setBrands(brandRes.data);
+
+        console.log('Footer categories:', catRes.data);
+        console.log('Footer brands:', brandRes.data);
+
+        setCategories(Array.isArray(catRes.data) ? catRes.data : []);
+        setBrands(Array.isArray(brandRes.data) ? brandRes.data : []);
       } catch (err) {
         console.error('Error loading footer data:', err);
+        setCategories([]);
+        setBrands([]);
       }
     };
-
     fetchData();
   }, []);
 
@@ -80,22 +84,30 @@ const Footer = () => {
             <div className="footer-col">
               <h4>All Categories</h4>
               <ul>
-                {categories.map((cat) => (
-                  <li key={cat.id}>
-                    <Link to={`/category/${cat.id}`}>{cat.name}</Link>
-                  </li>
-                ))}
+                {Array.isArray(categories) && categories.length > 0 ? (
+                  categories.map((cat) => (
+                    <li key={cat.id}>
+                      <Link to={`/category/${cat.id}`}>{cat.name}</Link>
+                    </li>
+                  ))
+                ) : (
+                  <li>No categories found</li>
+                )}
               </ul>
             </div>
 
             <div className="footer-col">
               <h4>All Brands</h4>
               <ul>
-                {(showAll ? brands : brands.slice(0, 10)).map((brand) => (
-                  <li key={brand.id}>
-                    <Link to={`/brand/${brand.id}`}>{brand.name}</Link>
-                  </li>
-                ))}
+                {Array.isArray(brands) && brands.length > 0 ? (
+                  (showAll ? brands : brands.slice(0, 10)).map((brand) => (
+                    <li key={brand.id}>
+                      <Link to={`/brand/${brand.id}`}>{brand.name}</Link>
+                    </li>
+                  ))
+                ) : (
+                  <li>No brands found</li>
+                )}
 
                 {brands.length > 10 && (
                   <li>
@@ -114,7 +126,6 @@ const Footer = () => {
                   </li>
                 )}
               </ul>
-
             </div>
 
             <div className="footer-col">
@@ -159,7 +170,6 @@ const Footer = () => {
       )}
     </>
   );
-
 };
 
 export default Footer;
