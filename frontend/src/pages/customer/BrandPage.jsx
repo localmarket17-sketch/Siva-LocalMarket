@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import CategoryNavBar from '../../components/CategoryNavBar';
@@ -24,18 +23,26 @@ const BrandPage = () => {
   useEffect(() => {
     const fetchBrandProducts = async () => {
       try {
-        const brandRes = await axios.get(`/api/brands/${brandId}`);
-        setBrandName(brandRes.data.name);
+        const brandRes = await fetch(`/api/brands/${brandId}`);
+        const brandData = await brandRes.json();
+        setBrandName(brandData?.name || 'Brand');
 
-        const productRes = await axios.get(`/api/brands/${brandId}/products`);
-        const productsWithBrands = productRes.data.map(p => ({
+        const productRes = await fetch(`/api/brands/${brandId}/products`);
+        const productData = await productRes.json();
+
+        // Ensure productsData is an array
+        const productsArray = Array.isArray(productData) ? productData : productData?.products || [];
+        const productsWithBrands = productsArray.map(p => ({
           ...p,
           brands: Array.isArray(p.brands) ? p.brands : [],
         }));
+
         setProducts(productsWithBrands);
         setFilteredProducts(productsWithBrands);
       } catch (err) {
         console.error('Failed to fetch brand or products:', err);
+        setProducts([]);
+        setFilteredProducts([]);
       }
     };
 
@@ -60,11 +67,11 @@ const BrandPage = () => {
       filtered = filtered.filter(p => p.brands.includes(brandIdNum));
     }
 
-    if (selectedFilters.priceMin !== null && !isNaN(selectedFilters.priceMin)) {
+    if (selectedFilters.priceMin != null && !isNaN(selectedFilters.priceMin)) {
       filtered = filtered.filter(p => parseFloat(p.price) >= selectedFilters.priceMin);
     }
 
-    if (selectedFilters.priceMax !== null && !isNaN(selectedFilters.priceMax)) {
+    if (selectedFilters.priceMax != null && !isNaN(selectedFilters.priceMax)) {
       filtered = filtered.filter(p => parseFloat(p.price) <= selectedFilters.priceMax);
     }
 
@@ -104,17 +111,14 @@ const BrandPage = () => {
 
       {/* Breadcrumb */}
       <div className="breadcrumb container">
-        <Link to="/">Home</Link> <span>&gt;</span> <span>{brandName || 'Brand'}</span>
+        <Link to="/">Home</Link> <span>&gt;</span> <span>{brandName}</span>
       </div>
 
-      {/* Flex container for filter + products */}
       <div className="brand-content container">
-        {/* Sidebar filter */}
         <div className="filter-sidebar">
           <ProductFilter onApplyFilters={handleApplyFilters} />
         </div>
 
-        {/* Products section */}
         <div className="category-products">
           <h2 className="brand-title">Brand: {brandName}</h2>
 
