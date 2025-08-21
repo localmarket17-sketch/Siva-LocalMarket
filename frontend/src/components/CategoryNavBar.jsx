@@ -1,4 +1,4 @@
-// src/components/CategoryStrip.jsx
+// src/components/CategoryNavBar.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './CategoryNavBar.css';
@@ -39,13 +39,16 @@ const CategoryStrip = () => {
       <button className="scroll-btn left" onClick={scrollLeft}>{'<'}</button>
 
       <div className="category-strip" ref={stripRef}>
-        {(categories || []).map((cat) => (
+        {Array.isArray(categories) ? categories.map((cat) => (
           <Link to={`/category/${cat.id}`} className="category-pill" key={cat.id}>
-            <img src={cat.image || RImg} alt={cat.name} onError={(e) => (e.target.src = RImg)} />
+            <img
+              src={cat.image || RImg}
+              alt={cat.name}
+              onError={(e) => (e.target.src = RImg)}
+            />
             <span>{cat.name}</span>
           </Link>
-        ))}
-
+        )) : null}
       </div>
 
       <button className="scroll-btn right" onClick={scrollRight}>{'>'}</button>
