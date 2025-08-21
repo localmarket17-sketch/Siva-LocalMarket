@@ -39,12 +39,13 @@ const CategoryStrip = () => {
       <button className="scroll-btn left" onClick={scrollLeft}>{'<'}</button>
 
       <div className="category-strip" ref={stripRef}>
-        {categories.map((cat) => (
+        {(categories || []).map((cat) => (
           <Link to={`/category/${cat.id}`} className="category-pill" key={cat.id}>
             <img src={cat.image || RImg} alt={cat.name} onError={(e) => (e.target.src = RImg)} />
             <span>{cat.name}</span>
           </Link>
         ))}
+
       </div>
 
       <button className="scroll-btn right" onClick={scrollRight}>{'>'}</button>
