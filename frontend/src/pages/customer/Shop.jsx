@@ -48,26 +48,30 @@ const Shop = () => {
     const fetchData = async () => {
       try {
         const catRes = await axios.get('/api/categories');
-        setCategories(catRes.data);
+        const categoriesData = Array.isArray(catRes.data) ? catRes.data : [];
+        setCategories(categoriesData);
 
         const descs = {};
         const allSubcats = {};
-        for (const cat of catRes.data) {
+        for (const cat of categoriesData) {
+          const catName = cat.name || 'Unknown';
           const subRes = await axios.get(`/api/categories/${cat.id}/subcategories`);
-          allSubcats[cat.name] = subRes.data;
-          descs[cat.name] = `Explore top quality ${cat.name.toLowerCase()} for your daily needs.`;
+          allSubcats[catName] = Array.isArray(subRes.data) ? subRes.data : [];
+          descs[catName] = `Explore top quality ${catName.toLowerCase()} for your daily needs.`;
         }
+
         setDescriptions(descs);
         setSubcategories(allSubcats);
 
         const brandRes = await axios.get('/api/brands');
-        setBrands(brandRes.data);
+        setBrands(Array.isArray(brandRes.data) ? brandRes.data : []);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
     };
     fetchData();
   }, []);
+
 
   const getCustomTitle = (name) => {
     const lower = name.toLowerCase();
@@ -171,12 +175,16 @@ const Shop = () => {
           </div>
 
           <div className="subcategory-grid">
-            {(subcategories[cat.name] || []).slice(0, 10).map((sub) => (
-              <Link to={`/subcategory/${sub.id}`} className="subcategory-card" key={sub.id}>
-                <img src={sub.image || RImg} alt={sub.name} onError={e => e.target.src = RImg} />
-                <span>{sub.name}</span>
-              </Link>
-            ))}
+            {Array.isArray(subcategories[cat.name])
+              ? subcategories[cat.name].slice(0, 10).map((sub) => (
+                <Link to={`/subcategory/${sub.id}`} className="subcategory-card" key={sub.id}>
+                  <img src={sub.image || RImg} alt={sub.name} onError={e => e.target.src = RImg} />
+                  <span>{sub.name}</span>
+                </Link>
+              ))
+              : null
+            }
+
           </div>
 
           {/* Insert banner strip after every 2 categories */}
