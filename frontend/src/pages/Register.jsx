@@ -24,25 +24,35 @@ const Register = () => {
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
+
+    // ✅ Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await axios.post(
-        'http://localhost:3000/api/auth/send-otp',
+        "http://localhost:3000/api/auth/send-otp",
         { name: formData.name, email: formData.email },
         { withCredentials: true }
       );
 
       if ([200, 201, 204].includes(res.status)) {
         setOtpSent(true);
-        alert('OTP sent to your email');
+        alert("OTP sent to your email");
       }
     } catch (err) {
-      console.error('Send OTP error:', err);
-      alert(err.response?.data?.message || 'Failed to send OTP');
+      console.error("Send OTP error:", err);
+      alert(err.response?.data?.message || "Failed to send OTP");
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -50,16 +60,16 @@ const Register = () => {
 
     try {
       setLoading(true);
-const res = await axios.post(
-  'http://localhost:3000/api/auth/verify-otp',
-  {
-    enteredOtp: otp,
-    sentOtp: otp, // ⚠️ TEMPORARY FIX — backend should store OTP server-side ideally
-    role,
-    ...formData,
-  },
-  { withCredentials: true }
-);
+      const res = await axios.post(
+        'http://localhost:3000/api/auth/verify-otp',
+        {
+          enteredOtp: otp,
+          sentOtp: otp, // ⚠️ TEMPORARY FIX — backend should store OTP server-side ideally
+          role,
+          ...formData,
+        },
+        { withCredentials: true }
+      );
 
       if (res.status === 200) {
         alert('OTP verified successfully. You can now login.');

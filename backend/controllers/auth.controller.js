@@ -12,6 +12,12 @@ const AuthController = {
       return res.status(400).json({ message: 'Name and email are required' });
     }
 
+    // ✅ Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email format' });
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     try {
@@ -31,6 +37,7 @@ const AuthController = {
       res.status(500).json({ message: 'Failed to send OTP email' });
     }
   },
+
 
   // ✅ Register user after OTP is verified on frontend
   verifyOtp: async (req, res) => {
@@ -125,7 +132,7 @@ const AuthController = {
         }
 
         const token = jwt.sign(
-          { id: user.id, name: user.name, role: user.role, email: user.email, address: user.address},
+          { id: user.id, name: user.name, role: user.role, email: user.email, address: user.address },
           process.env.JWT_SECRET,
           { expiresIn: '1d' }
         );
