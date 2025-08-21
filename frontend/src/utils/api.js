@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // ✅ Base Axios instance
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.REACT_APP_API_BASE_URL,
   withCredentials: true, // 🔐 Send cookies automatically
 });
 
