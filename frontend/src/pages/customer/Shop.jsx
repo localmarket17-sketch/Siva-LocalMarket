@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import CategoryNavbar from '../../components/CategoryNavBar';
+import API from '../../utils/api';
 import './Shop.css';
 import RImg from '../../assets/R.png'; // Test image
 import Banner1 from "../../assets/smart-cart-sale.png";
@@ -47,7 +48,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await axios.get('/api/categories');
+        const catRes = await API.get('/categories');
         const categoriesData = Array.isArray(catRes.data) ? catRes.data : [];
         setCategories(categoriesData);
 
@@ -55,7 +56,7 @@ const Shop = () => {
         const allSubcats = {};
         for (const cat of categoriesData) {
           const catName = cat.name || 'Unknown';
-          const subRes = await axios.get(`/api/categories/${cat.id}/subcategories`);
+          const subRes = await API.get(`/categories/${cat.id}/subcategories`);
           allSubcats[catName] = Array.isArray(subRes.data) ? subRes.data : [];
           descs[catName] = `Explore top quality ${catName.toLowerCase()} for your daily needs.`;
         }
@@ -63,7 +64,7 @@ const Shop = () => {
         setDescriptions(descs);
         setSubcategories(allSubcats);
 
-        const brandRes = await axios.get('/api/brands');
+        const brandRes = await API.get('/brands');
         setBrands(Array.isArray(brandRes.data) ? brandRes.data : []);
       } catch (err) {
         console.error('Error fetching data:', err);
