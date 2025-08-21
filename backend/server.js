@@ -13,7 +13,8 @@ if (process.env.NODE_ENV === 'production') {
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3001',  // Frontend URL
+  origin: ['http://localhost:3001', 'https://siva-localmarket-1.onrender.com'],
+  // Frontend URL
   credentials: true                // 🔐 Allow cookies
 }));
 
