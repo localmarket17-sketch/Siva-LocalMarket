@@ -13,7 +13,8 @@ const CategoryStrip = () => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get('/api/categories');
-        // Make sure res.data is an array before setting state
+        console.log('Categories response:', res.data);
+        // Ensure the API response is an array
         if (Array.isArray(res.data)) {
           setCategories(res.data);
         } else {
