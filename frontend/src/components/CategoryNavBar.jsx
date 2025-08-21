@@ -13,9 +13,16 @@ const CategoryStrip = () => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get('/api/categories');
-        setCategories(res.data);
+        // Make sure res.data is an array before setting state
+        if (Array.isArray(res.data)) {
+          setCategories(res.data);
+        } else {
+          console.error('Categories API did not return an array:', res.data);
+          setCategories([]);
+        }
       } catch (error) {
         console.error('Failed to load categories:', error);
+        setCategories([]);
       }
     };
 
@@ -39,16 +46,19 @@ const CategoryStrip = () => {
       <button className="scroll-btn left" onClick={scrollLeft}>{'<'}</button>
 
       <div className="category-strip" ref={stripRef}>
-        {Array.isArray(categories) ? categories.map((cat) => (
-          <Link to={`/category/${cat.id}`} className="category-pill" key={cat.id}>
-            <img
-              src={cat.image || RImg}
-              alt={cat.name}
-              onError={(e) => (e.target.src = RImg)}
-            />
-            <span>{cat.name}</span>
-          </Link>
-        )) : null}
+        {Array.isArray(categories) && categories.length > 0
+          ? categories.map((cat) => (
+              <Link to={`/category/${cat.id}`} className="category-pill" key={cat.id}>
+                <img
+                  src={cat.image || RImg}
+                  alt={cat.name}
+                  onError={(e) => (e.target.src = RImg)}
+                />
+                <span>{cat.name}</span>
+              </Link>
+            ))
+          : <span className="no-categories">No categories found</span>
+        }
       </div>
 
       <button className="scroll-btn right" onClick={scrollRight}>{'>'}</button>
