@@ -12,9 +12,9 @@ const CategoryStrip = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('/api/categories');
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/categories`);
         console.log('Categories response:', res.data);
-        // Ensure the API response is an array
+
         if (Array.isArray(res.data)) {
           setCategories(res.data);
         } else {
@@ -47,19 +47,20 @@ const CategoryStrip = () => {
       <button className="scroll-btn left" onClick={scrollLeft}>{'<'}</button>
 
       <div className="category-strip" ref={stripRef}>
-        {Array.isArray(categories) && categories.length > 0
-          ? categories.map((cat) => (
-              <Link to={`/category/${cat.id}`} className="category-pill" key={cat.id}>
-                <img
-                  src={cat.image || RImg}
-                  alt={cat.name}
-                  onError={(e) => (e.target.src = RImg)}
-                />
-                <span>{cat.name}</span>
-              </Link>
-            ))
-          : <span className="no-categories">No categories found</span>
-        }
+        {Array.isArray(categories) && categories.length > 0 ? (
+          categories.map((cat) => (
+            <Link to={`/category/${cat.id}`} className="category-pill" key={cat.id}>
+              <img
+                src={cat.image || RImg}
+                alt={cat.name}
+                onError={(e) => (e.target.src = RImg)}
+              />
+              <span>{cat.name}</span>
+            </Link>
+          ))
+        ) : (
+          <span className="no-categories">No categories found</span>
+        )}
       </div>
 
       <button className="scroll-btn right" onClick={scrollRight}>{'>'}</button>
