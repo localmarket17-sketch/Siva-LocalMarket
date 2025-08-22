@@ -102,17 +102,16 @@ const AuthController = {
   login: (req, res) => {
     const { email, password, role } = req.body;
 
-
     if (!email?.trim() || !password?.trim() || !role?.trim()) {
       return res.status(400).json({ message: 'Email, password, and role are required' });
     }
 
     const sql = `
-      SELECT u.id, u.name, u.email, u.password, u.address, r.name AS role 
-      FROM users u 
-      JOIN roles r ON u.role_id = r.id 
-      WHERE (u.email = ? OR u.mobile = ?) AND r.name = ?
-    `;
+    SELECT u.id, u.name, u.email, u.password, u.address, r.name AS role 
+    FROM users u 
+    JOIN roles r ON u.role_id = r.id 
+    WHERE (u.email = ? OR u.mobile = ?) AND r.name = ?
+  `;
 
     db.query(sql, [email.trim(), email.trim(), role.trim()], async (err, results) => {
       if (err) {
@@ -137,10 +136,11 @@ const AuthController = {
           { expiresIn: '1d' }
         );
 
+        // ✅ Updated cookie settings for Render / cross-origin
         res.cookie('token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'Lax',
+          secure: process.env.NODE_ENV === 'production', // true on HTTPS
+          sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // cross-site safe in production
           maxAge: 24 * 60 * 60 * 1000
         });
 
