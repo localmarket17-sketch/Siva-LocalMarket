@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API from '../utils/api';
 import { AuthContext } from '../contexts/AuthContext';
 import Navbar from '../components/Navbar';
 import './Login.css'; // Add this file to match Flipkart styling
@@ -17,7 +18,7 @@ const Login = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await axios.get('/api/auth/session', { withCredentials: true });
+        const res = await API.get('/auth/session', { withCredentials: true });
         if (res.data?.user?.role) {
           const role = res.data.user.role;
           if (role === 'customer') {
@@ -44,10 +45,10 @@ const Login = () => {
     setError('');
 
     try {
-      const res = await axios.post(
-        '/api/auth/login',
+      const res = await API.post(
+        '/auth/login',
         { email, password, role },
-        { withCredentials: true }
+        { withCredentials: true } // explicitly send cookies
       );
 
       const { user } = res.data;

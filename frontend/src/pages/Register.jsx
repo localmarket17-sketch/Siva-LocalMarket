@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API from '../utils/api';
 import './Register.css';
 
 const Register = () => {
@@ -35,10 +36,10 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/send-otp",
+      const res = await API.post(
+        '/auth/send-otp',
         { name: formData.name, email: formData.email },
-        { withCredentials: true }
+        { withCredentials: true } // explicitly send cookies
       );
 
       if ([200, 201, 204].includes(res.status)) {
@@ -60,15 +61,15 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        'http://localhost:3000/api/auth/verify-otp',
+      const res = await API.post(
+        '/auth/verify-otp',
         {
           enteredOtp: otp,
           sentOtp: otp, // ⚠️ TEMPORARY FIX — backend should store OTP server-side ideally
           role,
           ...formData,
         },
-        { withCredentials: true }
+        { withCredentials: true } // explicitly send cookies
       );
 
       if (res.status === 200) {
