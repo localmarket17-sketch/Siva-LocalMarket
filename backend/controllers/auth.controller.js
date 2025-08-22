@@ -165,10 +165,11 @@ const AuthController = {
     res.clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
     });
     res.status(200).json({ message: 'Logged out successfully' });
   },
+
 
   getSessionUser: (req, res) => {
     const token = req.cookies.token;
