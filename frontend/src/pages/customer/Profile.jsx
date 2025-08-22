@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import './Profile.css';
 
 const cProfile = () => {
@@ -17,17 +18,16 @@ const cProfile = () => {
     const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
-        axios.get('/api/users/profile', { withCredentials: true })
+        API.get('/api/users/profile', { withCredentials: true })
             .then(res => setProfile(res.data))
             .catch(err => console.error('Profile fetch failed', err));
     }, []);
-
     const handleChange = (e) => {
         setProfile(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSave = () => {
-        axios.put('/api/users/profile', profile, { withCredentials: true })
+        API.put('/api/users/profile', profile, { withCredentials: true })
             .then(() => setEditMode(false))
             .catch(err => console.error('Profile update failed', err));
     };

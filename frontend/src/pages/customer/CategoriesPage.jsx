@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './CategoriesPage.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import CategoryNavBar from '../../components/CategoryNavBar';
 import RImg from '../../assets/R.png';
 
@@ -19,10 +20,10 @@ const CategoriesAndBrandsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await axios.get('/api/categories');
+        const catRes = await API.get('/api/categories');
         setCategories(catRes.data);
 
-        const brandRes = await axios.get('/api/brands');
+        const brandRes = await API.get('/api/brands');
         setBrands(brandRes.data);
       } catch (err) {
         console.error('Failed to load categories or brands:', err);
@@ -64,7 +65,7 @@ const CategoriesAndBrandsPage = () => {
     }
 
     try {
-      const res = await axios.get(`/api/categories/${categoryId}/subcategories`);
+      const res = await API.get(`/api/categories/${categoryId}/subcategories`);
       setExpandedCategory(categoryId);
       setPopupSubcategories(res.data);
     } catch (err) {

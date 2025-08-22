@@ -4,6 +4,7 @@ import axios from 'axios';
 import './ProductDetails.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import CategoryNavbar from '../../components/CategoryNavBar';
 import { useCart } from '../../contexts/CartContext';
 import { useWishlist } from '../../contexts/WishlistContext';
@@ -24,7 +25,7 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`/api/products/${productId}`);
+        const res = await API.get(`/api/products/${productId}`);
         setProduct(res.data);
       } catch (err) {
         console.error('Failed to load product:', err);

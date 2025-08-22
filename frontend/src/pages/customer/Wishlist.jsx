@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
-import { useCart } from "../../contexts/CartContext";  
+import { useCart } from "../../contexts/CartContext";
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import './Wishlist.css';
 import RImg from '../../assets/R.png'; // fallback image if needed
 
@@ -16,7 +17,7 @@ const Wishlist = () => {
 
   const fetchWishlist = async () => {
     try {
-      const res = await axios.get(`/api/wishlist/${user.id}`);
+      const res = await API.get(`/api/wishlist/${user.id}`);
       setWishlist(res.data);
     } catch (err) {
       console.error('Error fetching wishlist:', err);
@@ -27,7 +28,7 @@ const Wishlist = () => {
 
   const removeFromWishlist = async (productId) => {
     try {
-      await axios.delete(`/api/wishlist/${user.id}/${productId}`);
+      await API.delete(`/api/wishlist/${user.id}/${productId}`);
       setWishlist((prev) => prev.filter((item) => item.id !== productId));
     } catch (err) {
       console.error('Error removing item:', err);
@@ -36,7 +37,7 @@ const Wishlist = () => {
 
   const moveToCart = async (product) => {
     try {
-      await axios.post(
+      await API.post(
         "/api/cart/user/cart", // ✅ correct endpoint
         {
           productId: product.id,

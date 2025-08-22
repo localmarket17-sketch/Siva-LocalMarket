@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import './MyOrders.css';
 
 const MyOrders = () => {
@@ -14,7 +15,7 @@ const MyOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get(`/api/orders/user/${user.id}`);
+      const res = await API.get(`/api/orders/user/${user.id}`);
       setOrders(res.data.orders || res.data); // Support both response formats
     } catch (err) {
       console.error('Failed to fetch orders:', err);

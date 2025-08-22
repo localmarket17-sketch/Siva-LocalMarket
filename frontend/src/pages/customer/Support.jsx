@@ -1,6 +1,7 @@
 // src/pages/customer/Support.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/ui/button';
 
@@ -13,7 +14,7 @@ const Support = () => {
   const fetchTickets = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`/api/support/user/${user.id}`);
+      const res = await API.get(`/api/support/user/${user.id}`);
       setTickets(res.data);
     } catch (err) {
       console.error('Error fetching support tickets:', err);
@@ -33,7 +34,7 @@ const Support = () => {
     if (!query.trim()) return;
 
     try {
-      const res = await axios.post('/api/support', {
+      const res = await API.post('/api/support', {
         user_id: user.id,
         message: query,
       });

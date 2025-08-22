@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import './MyAccount.css';
 
 const MyAccount = () => {
@@ -12,7 +13,7 @@ const MyAccount = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('/api/auth/session'); // token in cookie
+        const res = await API.get('/api/auth/session'); // token in cookie
         setUser(res.data.user);
       } catch (err) {
         console.warn("User not logged in, redirecting to login...");
@@ -25,7 +26,7 @@ const MyAccount = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/auth/logout'); // optional, if logout clears cookie on server
+      await API.post('/api/auth/logout'); // optional, if logout clears cookie on server
     } catch (err) {
       console.error('Logout failed:', err);
     }

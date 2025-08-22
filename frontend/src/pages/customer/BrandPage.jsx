@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import CategoryNavBar from '../../components/CategoryNavBar';
 import ProductFilter from '../../components/FilterSortPanel';
 import { useCart } from '../../contexts/CartContext';
@@ -23,11 +24,11 @@ const BrandPage = () => {
   useEffect(() => {
     const fetchBrandProducts = async () => {
       try {
-        const brandRes = await fetch(`/api/brands/${brandId}`);
+        const brandRes = await API.get(`/brands/${brandId}`);
         const brandData = await brandRes.json();
         setBrandName(brandData?.name || 'Brand');
 
-        const productRes = await fetch(`/api/brands/${brandId}/products`);
+        const productRes = await API.get(`/brands/${brandId}/products`);
         const productData = await productRes.json();
 
         // Ensure productsData is an array

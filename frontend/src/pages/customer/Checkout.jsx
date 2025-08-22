@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { QRCode } from 'react-qrcode-logo';
+import API from '../../utils/api';
 import { useCart } from '../../contexts/CartContext';
 import './Checkout.css';
 
@@ -14,8 +15,8 @@ const Checkout = () => {
   const { removeFromCart } = useCart();
 
   useEffect(() => {
-    axios.get('/api/users/profile').then(res => setAddress(res.data.address || ''));
-    axios.get('/api/users/cart').then(res => setCartItems(res.data));
+    API.get('/api/users/profile').then(res => setAddress(res.data.address || ''));
+    API.get('/api/users/cart').then(res => setCartItems(res.data));
   }, []);
 
   useEffect(() => {
@@ -40,8 +41,8 @@ const Checkout = () => {
 
       console.log("Order Payload:", payload);
 
-      await axios.post('/api/orders/create', payload, {
-        withCredentials: true
+      await API.post('/api/orders/create', payload, {
+        withCredentials: true,
       });
 
       for (const item of cartItems) {

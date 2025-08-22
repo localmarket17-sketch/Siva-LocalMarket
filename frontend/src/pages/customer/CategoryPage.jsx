@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import ProductFilter from '../../components/FilterSortPanel';
 import CategoryNavBar from '../../components/CategoryNavBar';
 import { useCart } from '../../contexts/CartContext';
@@ -25,10 +26,10 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await axios.get(`/api/categories/${categoryId}`);
+        const catRes = await API.get(`/api/categories/${categoryId}`);
         setCategoryName(catRes.data.name);
 
-        const res = await axios.get(`/api/categories/${categoryId}/products`);
+        const res = await API.get(`/api/categories/${categoryId}/products`);
         const productsWithBrands = res.data.map(p => ({
           ...p,
           brands: Array.isArray(p.brands) ? p.brands : []

@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import API from '../../utils/api';
 import CategoryNavbar from '../../components/CategoryNavBar';
 import ProductFilter from '../../components/FilterSortPanel';
 import { useWishlist } from '../../contexts/WishlistContext';
@@ -24,10 +25,10 @@ const SubcategoryPage = () => {
   useEffect(() => {
     const fetchSubcategoryAndProducts = async () => {
       try {
-        const subRes = await axios.get(`/api/subcategories/${subcategoryId}`);
+       const subRes = await API.get(`/api/subcategories/${subcategoryId}`);
         setSubcategory(subRes.data.subcategory);
 
-        const res = await axios.get(`/api/subcategories/${subcategoryId}/products`);
+        const res = await API.get(`/api/subcategories/${subcategoryId}/products`);
         const productsWithBrands = res.data.map(p => ({
           ...p,
           brands: Array.isArray(p.brands) ? p.brands : [],
