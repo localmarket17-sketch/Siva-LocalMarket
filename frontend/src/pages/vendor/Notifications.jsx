@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import './Notifications.css'; // Optional: You can create for styles
 
@@ -13,7 +14,7 @@ const Notifications = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get('/api/vendor/notifications', {
+      const res = await api.get('/vendor/notifications', {
         withCredentials: true,
       });
       setNotifications(res.data);

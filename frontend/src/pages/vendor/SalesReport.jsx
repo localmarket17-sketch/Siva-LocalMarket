@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid,
@@ -17,7 +18,7 @@ const SalesReport = () => {
 
   const fetchSalesReport = async () => {
     try {
-      const res = await axios.get('/api/vendor/sales-report', {
+      const res = await api.get('/vendor/sales-report', {
         withCredentials: true,
       });
       setReport(res.data);

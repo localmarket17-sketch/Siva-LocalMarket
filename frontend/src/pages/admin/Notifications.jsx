@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './Notifications.css';
 
@@ -10,7 +11,7 @@ const Notifications = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/admin/notifications', {
+      const res = await api.get('/admin/notifications', {
         withCredentials: true,
       });
       setNotifications(res.data);
@@ -24,7 +25,7 @@ const Notifications = () => {
 
   const markAsRead = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/admin/notifications/${id}/read`, {}, {
+      await api.put(`/admin/notifications/${id}/read`, {}, {
         withCredentials: true,
       });
       setNotifications((prev) =>

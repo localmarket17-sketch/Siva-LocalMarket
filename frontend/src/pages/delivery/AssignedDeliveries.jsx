@@ -1,6 +1,7 @@
 // src/pages/delivery/AssignedDeliveries.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebarvd from '../../components/Sidebarvd';
 import './AssignedDeliveries.css';
@@ -12,7 +13,7 @@ const AssignedDeliveries = () => {
 
   const fetchAssignedOrders = async () => {
     try {
-      const res = await axios.get(`/api/delivery/${user.id}/assigned-orders`, {
+      const res = await api.get(`/delivery/${user.id}/assigned-orders`, {
         withCredentials: true,
       });
       setOrders(res.data);
@@ -25,7 +26,7 @@ const AssignedDeliveries = () => {
 
   const updateStatus = async (orderId, status) => {
     try {
-      await axios.put(`/api/delivery/update-status/${orderId}`, { status }, { withCredentials: true });
+      await api.put(`/delivery/update-status/${orderId}`, { status }, { withCredentials: true });
       fetchAssignedOrders(); // Refresh
     } catch (err) {
       console.error('Failed to update status:', err);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './Profile.css';
 
@@ -21,7 +22,7 @@ const Profile = () => {
 
   const fetchAdminProfile = async () => {
     try {
-      const res = await axios.get('/api/admin/profile', { withCredentials: true });
+      const res = await api.get('/admin/profile', { withCredentials: true });
       setAdmin(res.data);
       setFormData({
         name: res.data.name || '',
@@ -45,7 +46,7 @@ const Profile = () => {
     e.preventDefault();
     setMessage('');
     try {
-      await axios.put('/api/admin/profile', formData, { withCredentials: true });
+      await api.put('/admin/profile', formData, { withCredentials: true });
       setAdmin({ ...admin, ...formData });
       setEditing(false);
       setMessage('Profile updated successfully.');

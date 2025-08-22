@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import Select from 'react-select';
 import './AddProduct.css';
@@ -24,11 +25,11 @@ const AddProduct = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('/api/categories')
+    api.get('/categories')
       .then(res => setCategories(res.data))
       .catch(() => setCategories([]));
 
-    axios.get('/api/brands')
+    api.get('/brands')
       .then(res => setBrands(res.data))
       .catch(() => setBrands([]));
 
@@ -37,7 +38,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     if (product.category_id) {
-      axios.get(`/api/subcategories?categoryId=${product.category_id}`)
+      api.get(`/subcategories?categoryId=${product.category_id}`)
         .then(res => setSubcategories(res.data))
         .catch(() => setSubcategories([]));
     } else {
@@ -46,7 +47,7 @@ const AddProduct = () => {
   }, [product.category_id]);
 
   const fetchProducts = () => {
-    axios.get('/api/vendor/products', { withCredentials: true })
+    api.get('/vendor/products', { withCredentials: true })
       .then(res => setProducts(res.data))
       .catch(() => setProducts([]));
   };
@@ -96,10 +97,10 @@ const AddProduct = () => {
       const productData = { ...product, image: imageUrl };
 
       if (editingId) {
-        await axios.put(`/api/vendor/products/${editingId}`, productData, { withCredentials: true });
+        await api.put(`/vendor/products/${editingId}`, productData, { withCredentials: true });
         setMessage('Product updated successfully!');
       } else {
-        await axios.post('/api/vendor/add-product', productData, { withCredentials: true });
+        await api.post('/vendor/add-product', productData, { withCredentials: true });
         setMessage('Product added successfully!');
       }
 
@@ -141,7 +142,7 @@ const AddProduct = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
-      axios.delete(`/api/vendor/products/${id}`, { withCredentials: true })
+      api.delete(`/vendor/products/${id}`, { withCredentials: true })
         .then(() => {
           fetchProducts();
           setMessage('Product deleted successfully.');
@@ -151,7 +152,7 @@ const AddProduct = () => {
   };
 
   const handleStockUpdate = (id, newStock) => {
-    axios.put(`/api/vendor/inventory/${id}`, { stock: newStock }, { withCredentials: true })
+    api.put(`/vendor/inventory/${id}`, { stock: newStock }, { withCredentials: true })
       .then(() => fetchProducts())
       .catch(() => setMessage('Failed to update stock.'));
   };

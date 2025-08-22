@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './ManageProducts.css';
 
@@ -15,7 +16,7 @@ const ManageProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('/api/admin/products');
+      const res = await api.get('/admin/products');
       setProducts(res.data);
     } catch (err) {
       setError('Failed to fetch products');
@@ -27,7 +28,7 @@ const ManageProducts = () => {
   const deleteProduct = async (id) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
-      await axios.delete(`/api/admin/products/${id}`);
+      await api.delete(`/admin/products/${id}`);
       setProducts((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
       alert('Error deleting product');

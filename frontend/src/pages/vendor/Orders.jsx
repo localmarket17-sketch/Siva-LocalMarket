@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import './Orders.css';
 
@@ -14,7 +15,7 @@ const VendorOrders = () => {
 
   const fetchVendorOrders = async () => {
     try {
-      const response = await axios.get(`/api/vendor/orders`, { withCredentials: true });
+      const response = await api.get('/vendor/orders', { withCredentials: true });
       setOrders(response.data);
     } catch (error) {
       console.error('Error fetching vendor orders:', error);
@@ -32,7 +33,7 @@ const VendorOrders = () => {
     if (!status) return;
 
     try {
-      await axios.put(`/api/orders/update-status/${orderId}`, { status }, { withCredentials: true });
+      await api.put(`/orders/update-status/${orderId}`, { status }, { withCredentials: true });
       fetchVendorOrders(); // Refresh list
     } catch (error) {
       console.error('Error updating order status:', error);

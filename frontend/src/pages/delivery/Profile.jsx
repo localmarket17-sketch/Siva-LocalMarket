@@ -1,6 +1,7 @@
 // src/pages/deliveryboy/Profile.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import './Profile.css';
 
@@ -14,7 +15,7 @@ const Profiles = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get('/api/delivery/profile', { withCredentials: true });
+        const res = await api.get('/delivery/profile', { withCredentials: true });
         setProfile(res.data);
       } catch (err) {
         console.error('Failed to load profile', err);
@@ -30,7 +31,7 @@ const Profiles = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put('/api/delivery/profile', profile, { withCredentials: true });
+      await api.put('/delivery/profile', profile, { withCredentials: true });
       alert('Profile updated successfully');
     } catch (err) {
       console.error('Failed to update profile', err);

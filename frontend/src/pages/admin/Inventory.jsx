@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './Inventory.css';
 
@@ -15,7 +16,7 @@ const Inventory = () => {
   // Fetch inventory from backend
   const fetchInventory = async () => {
     try {
-      const res = await axios.get('/api/admin/inventory');
+      const res = await api.get('/admin/inventory');
       setInventory(res.data);
       setLoading(false);
     } catch (err) {
@@ -33,7 +34,7 @@ const Inventory = () => {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/api/admin/inventory', newItem);
+      const res = await api.post('/admin/inventory', newItem);
       setInventory([...inventory, res.data]);
       setNewItem({ product_id: '', quantity: '' });
     } catch (err) {
@@ -44,7 +45,7 @@ const Inventory = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/admin/inventory/${id}`);
+      await api.delete(`/admin/inventory/${id}`);
       setInventory(inventory.filter((item) => item.id !== id));
     } catch (err) {
       console.error('Delete failed:', err);

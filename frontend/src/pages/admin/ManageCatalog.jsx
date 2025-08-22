@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd'; // Adjust if needed
 import './ManageCatalog.css'; // Optional CSS
 
@@ -14,7 +15,7 @@ const ManageCatalog = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await axios.get('/api/categories');
+                const res = await api.get('/categories');
                 setCategories(res.data);
             } catch (err) {
                 console.error('Failed to load categories:', err);
@@ -27,7 +28,7 @@ const ManageCatalog = () => {
     const handleImageUpload = async (file) => {
         const formData = new FormData();
         formData.append('image', file);
-        const res = await axios.post('/api/upload/image', formData);
+        const res = await api.post('/upload/image', formData);
         return res.data.imageUrl; // Backend should return { imageUrl: '...' }
     };
 
@@ -35,7 +36,7 @@ const ManageCatalog = () => {
         e.preventDefault();
         try {
             const imageUrl = category.image ? await handleImageUpload(category.image) : '';
-            await axios.post('/api/categories', {
+            await api.post('/categories', {
                 name: category.name,
                 image: imageUrl
             });
@@ -50,7 +51,7 @@ const ManageCatalog = () => {
         e.preventDefault();
         try {
             const imageUrl = subcategory.image ? await handleImageUpload(subcategory.image) : '';
-            await axios.post(`/api/categories/${subcategory.category_id}/subcategories`, {
+            await api.post(`/categories/${subcategory.category_id}/subcategories`, {
                 name: subcategory.name,
                 image: imageUrl
             });
@@ -66,7 +67,7 @@ const ManageCatalog = () => {
         e.preventDefault();
         try {
             const imageUrl = brand.image ? await handleImageUpload(brand.image) : '';
-            await axios.post('/api/brands', {
+            await api.post('/brands', {
                 name: brand.name,
                 image: imageUrl
             });

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './ManageOrders.css';
 
@@ -16,7 +17,7 @@ const ManageOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('/api/admin/orders');
+      const res = await api.get('/admin/orders');
       setOrders(res.data);
     } catch (err) {
       console.error('Error fetching orders:', err);
@@ -25,7 +26,7 @@ const ManageOrders = () => {
 
   const fetchDeliveryBoys = async () => {
     try {
-      const res = await axios.get('/api/admin/delivery-boys');
+      const res = await api.get('/admin/delivery-boys');
       setDeliveryBoys(res.data);
     } catch (err) {
       console.error('Error fetching delivery boys:', err);
@@ -50,7 +51,7 @@ const ManageOrders = () => {
     const assignable = Object.entries(assignments);
     for (const [orderId, deliveryBoyId] of assignable) {
       try {
-        await axios.post('/api/admin/orders/assign-delivery', {
+        await api.post('/admin/orders/assign-delivery', {
           orderId,
           deliveryBoyId
         });
@@ -68,7 +69,7 @@ const ManageOrders = () => {
     if (!newStatus) return;
 
     try {
-      const res = await axios.put('/api/orders/update-status', {
+      const res = await api.put('/orders/update-status', {
         order_id: orderId,
         status: newStatus,
       });

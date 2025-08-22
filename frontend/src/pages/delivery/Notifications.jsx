@@ -1,6 +1,7 @@
 // src/pages/deliveryboy/Notifications.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import './Notifications.css';
 
@@ -10,7 +11,7 @@ const Notification = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await axios.get('/api/delivery/notifications', { withCredentials: true });
+        const res = await api.get('/delivery/notifications', { withCredentials: true });
         setNotifications(res.data);
       } catch (err) {
         console.error('Failed to fetch notifications', err);
@@ -34,8 +35,8 @@ const Notification = () => {
           ))}
         </ul>
       </div>
-      </div>
-      );
+    </div>
+  );
 };
 
-      export default Notification;
+export default Notification;

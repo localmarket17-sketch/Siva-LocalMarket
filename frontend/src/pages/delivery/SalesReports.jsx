@@ -1,6 +1,7 @@
 // src/pages/deliveryboy/SalesReports.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import './SalesReports.css';
 
@@ -10,7 +11,7 @@ const SalesReports = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await axios.get('/api/delivery/sales-reports', { withCredentials: true });
+        const res = await api.get('/delivery/sales-reports', { withCredentials: true });
         setReports(res.data);
       } catch (err) {
         console.error('Failed to fetch reports', err);

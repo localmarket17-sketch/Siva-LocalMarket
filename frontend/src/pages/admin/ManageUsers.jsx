@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './ManageUsers.css';
 
@@ -15,7 +16,7 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('/api/admin/users');
+      const res = await api.get('/admin/users');
       setUsers(res.data);
     } catch (err) {
       setError('Failed to fetch users');
@@ -27,7 +28,7 @@ const ManageUsers = () => {
   const deleteUser = async (id) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`/api/admin/users/${id}`);
+      await api.delete(`/admin/users/${id}`);
       setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
       alert('Failed to delete user');

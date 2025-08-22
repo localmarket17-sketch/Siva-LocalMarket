@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './ManageDeliveryBoys.css';
 
@@ -9,7 +10,7 @@ const ManageDeliveryBoys = () => {
 
   const fetchDeliveryBoys = async () => {
     try {
-      const res = await axios.get('/api/admin/delivery-boys');
+      const res = await api.get('/admin/delivery-boys');
       setDeliveryBoys(res.data);
     } catch (err) {
       console.error('Error fetching delivery boys:', err);
@@ -23,7 +24,7 @@ const ManageDeliveryBoys = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this delivery boy?')) return;
     try {
-      await axios.delete(`/api/admin/delivery-boys/${id}`);
+      await api.delete(`/admin/delivery-boys/${id}`);
       fetchDeliveryBoys();
     } catch (err) {
       console.error('Error deleting delivery boy:', err);

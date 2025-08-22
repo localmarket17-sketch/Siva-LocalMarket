@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebar from '../../components/Sidebarvd';
 import './ManageVendors.css';
 
@@ -15,7 +16,7 @@ const ManageVendors = () => {
 
   const fetchVendors = async () => {
     try {
-      const res = await axios.get('/api/admin/vendors');
+      const res = await api.get('/admin/vendors');
       setVendors(res.data);
     } catch (err) {
       setError('Failed to fetch vendors');
@@ -27,7 +28,7 @@ const ManageVendors = () => {
   const deleteVendor = async (id) => {
     if (!window.confirm('Are you sure you want to delete this vendor?')) return;
     try {
-      await axios.delete(`/api/admin/vendors/${id}`);
+      await api.delete(`/admin/vendors/${id}`);
       setVendors((prev) => prev.filter((v) => v.id !== id));
     } catch (err) {
       alert('Failed to delete vendor');

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from '../../components/Sidebarvd'; // Adjust path if needed
 import './Dashboard.css';
@@ -18,7 +19,7 @@ const VendorDashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get('/api/vendor/dashboard-stats', {
+        const res = await api.get('/vendor/dashboard-stats', {
           withCredentials: true,
         });
         setStats(res.data);

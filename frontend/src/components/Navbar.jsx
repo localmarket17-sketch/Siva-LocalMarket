@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { throttle } from 'lodash';
 import { AuthContext } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,11 +26,28 @@ const Navbar = ({ onSearch }) => {
   // Hide delivery bar on scroll
   useEffect(() => {
     let lastScroll = window.scrollY;
+    let scrollingDown = false;
+
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      setShowDelivery(currentScroll < lastScroll || currentScroll < 50);
+
+      if (currentScroll > lastScroll + 5) { // scrolling down
+        if (!scrollingDown) {
+          setShowDelivery(false);
+          scrollingDown = true;
+        }
+      } else if (currentScroll < lastScroll - 5) { // scrolling up
+        if (scrollingDown) {
+          setShowDelivery(true);
+          scrollingDown = false;
+        }
+      } else if (currentScroll < 50) { // near top
+        setShowDelivery(true);
+      }
+
       lastScroll = currentScroll;
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -65,7 +83,7 @@ const Navbar = ({ onSearch }) => {
         <div className="navbar-icons">
           <div className="home">
             <Link to="/" className="cart-link">
-                  Home
+              Home
             </Link>
           </div>
           <div className="cart">

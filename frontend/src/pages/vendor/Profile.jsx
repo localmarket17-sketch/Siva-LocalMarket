@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../../utils/api';
 import Sidebarvd from '../../components/Sidebarvd';
 import './Profile.css';
 
@@ -15,7 +16,7 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get('/api/vendor/profile', { withCredentials: true });
+      const res = await api.get('/vendor/profile', { withCredentials: true });
       setProfile(res.data);
       setFormData(res.data);
     } catch (err) {
@@ -32,7 +33,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('/api/vendor/profile', formData, { withCredentials: true });
+      await api.put('/vendor/profile', formData, { withCredentials: true });
       setEditOpen(false);
       fetchProfile();
     } catch (err) {
