@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import API from '../../utils/api';
+import API from '../utils/api';
 import { useLocation } from 'react-router-dom';
 
 const Footer = () => {

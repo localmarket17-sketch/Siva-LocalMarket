@@ -1,7 +1,7 @@
 // src/contexts/WishlistContext.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import API from '../../utils/api';
+import API from '../utils/api';
 import { useAuth } from './AuthContext';
 
 const WishlistContext = createContext();
