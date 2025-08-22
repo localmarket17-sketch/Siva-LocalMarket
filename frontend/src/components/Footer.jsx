@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import API from '../../utils/api';
 import { useLocation } from 'react-router-dom';
 
 const Footer = () => {
@@ -35,10 +36,9 @@ const Footer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
         const [catRes, brandRes] = await Promise.all([
-          axios.get(`${API_BASE}/categories`),
-          axios.get(`${API_BASE}/brands`),
+          API.get(`/categories`),
+          API.get(`/brands`),
         ]);
 
         console.log('Footer categories:', catRes.data);

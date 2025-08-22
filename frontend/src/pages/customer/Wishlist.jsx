@@ -17,7 +17,7 @@ const Wishlist = () => {
 
   const fetchWishlist = async () => {
     try {
-      const res = await API.get(`/api/wishlist/${user.id}`);
+      const res = await API.get(`/wishlist/${user.id}`);
       setWishlist(res.data);
     } catch (err) {
       console.error('Error fetching wishlist:', err);
@@ -28,7 +28,7 @@ const Wishlist = () => {
 
   const removeFromWishlist = async (productId) => {
     try {
-      await API.delete(`/api/wishlist/${user.id}/${productId}`);
+      await API.delete(`/wishlist/${user.id}/${productId}`);
       setWishlist((prev) => prev.filter((item) => item.id !== productId));
     } catch (err) {
       console.error('Error removing item:', err);
@@ -38,7 +38,7 @@ const Wishlist = () => {
   const moveToCart = async (product) => {
     try {
       await API.post(
-        "/api/cart/user/cart", // ✅ correct endpoint
+        "/cart/user/cart", // ✅ correct endpoint
         {
           productId: product.id,
           quantity: 1,

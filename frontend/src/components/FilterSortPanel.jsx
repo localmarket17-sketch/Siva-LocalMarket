@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API from '../../utils/api';
 import './FilterSortPanel.css';
 
 const ProductFilter = ({ onApplyFilters }) => {
@@ -18,14 +19,13 @@ const ProductFilter = ({ onApplyFilters }) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   useEffect(() => {
-    axios.get("/api/categories").then(res => setCategories(res.data));
-    axios.get("/api/brands").then(res => setBrands(res.data));
+    API.get("/categories").then(res => setCategories(res.data));
+    API.get("/brands").then(res => setBrands(res.data));
   }, []);
 
   useEffect(() => {
     if (filters.category) {
-      axios
-        .get(`/api/categories/${filters.category}/subcategories`)
+      API.get(`/categories/${filters.category}/subcategories`)
         .then(res => setSubcategories(res.data))
         .catch(() => setSubcategories([]));
     } else setSubcategories([]);
@@ -65,7 +65,7 @@ const ProductFilter = ({ onApplyFilters }) => {
         className="mobile-filter-toggle"
         onClick={() => setIsMobileFilterOpen(true)}
       >
-      ⇅ Filters
+        ⇅ Filters
       </button>
 
       <aside className={`filter-container ${isMobileFilterOpen ? "open" : ""}`}>

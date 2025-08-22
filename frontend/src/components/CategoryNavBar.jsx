@@ -1,6 +1,7 @@
 // src/components/CategoryNavBar.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import API from '../../utils/api';
 import './CategoryNavBar.css';
 import { Link } from 'react-router-dom';
 import RImg from '../assets/R.png';
@@ -12,7 +13,7 @@ const CategoryStrip = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/categories`);
+        const res = await API.get('/categories');
         console.log('Categories response:', res.data);
 
         if (Array.isArray(res.data)) {

@@ -25,7 +25,7 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await API.get(`/api/products/${productId}`);
+        const res = await API.get(`/products/${productId}`);
         setProduct(res.data);
       } catch (err) {
         console.error('Failed to load product:', err);

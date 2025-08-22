@@ -13,7 +13,7 @@ const MyAccount = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await API.get('/api/auth/session'); // token in cookie
+        const res = await API.get('/auth/session'); // token in cookie
         setUser(res.data.user);
       } catch (err) {
         console.warn("User not logged in, redirecting to login...");
@@ -26,7 +26,7 @@ const MyAccount = () => {
 
   const handleLogout = async () => {
     try {
-      await API.post('/api/auth/logout'); // optional, if logout clears cookie on server
+      await API.post('/auth/logout'); // optional, if logout clears cookie on server
     } catch (err) {
       console.error('Logout failed:', err);
     }

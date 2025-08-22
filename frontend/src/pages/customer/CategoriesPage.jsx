@@ -20,10 +20,10 @@ const CategoriesAndBrandsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await API.get('/api/categories');
+        const catRes = await API.get('/categories');
         setCategories(catRes.data);
 
-        const brandRes = await API.get('/api/brands');
+        const brandRes = await API.get('/brands');
         setBrands(brandRes.data);
       } catch (err) {
         console.error('Failed to load categories or brands:', err);
@@ -65,7 +65,7 @@ const CategoriesAndBrandsPage = () => {
     }
 
     try {
-      const res = await API.get(`/api/categories/${categoryId}/subcategories`);
+      const res = await API.get(`/categories/${categoryId}/subcategories`);
       setExpandedCategory(categoryId);
       setPopupSubcategories(res.data);
     } catch (err) {

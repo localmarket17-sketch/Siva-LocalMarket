@@ -14,7 +14,7 @@ const Support = () => {
   const fetchTickets = async () => {
     try {
       setLoading(true);
-      const res = await API.get(`/api/support/user/${user.id}`);
+      const res = await API.get(`/support/user/${user.id}`);
       setTickets(res.data);
     } catch (err) {
       console.error('Error fetching support tickets:', err);
@@ -34,7 +34,7 @@ const Support = () => {
     if (!query.trim()) return;
 
     try {
-      const res = await API.post('/api/support', {
+      const res = await API.post('/support', {
         user_id: user.id,
         message: query,
       });

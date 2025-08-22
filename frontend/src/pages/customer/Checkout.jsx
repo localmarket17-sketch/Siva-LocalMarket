@@ -15,8 +15,8 @@ const Checkout = () => {
   const { removeFromCart } = useCart();
 
   useEffect(() => {
-    API.get('/api/users/profile').then(res => setAddress(res.data.address || ''));
-    API.get('/api/users/cart').then(res => setCartItems(res.data));
+    API.get('/users/profile').then(res => setAddress(res.data.address || ''));
+    API.get('/users/cart').then(res => setCartItems(res.data));
   }, []);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Checkout = () => {
 
       console.log("Order Payload:", payload);
 
-      await API.post('/api/orders/create', payload, {
+      await API.post('/orders/create', payload, {
         withCredentials: true,
       });
 

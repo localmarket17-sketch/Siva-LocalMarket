@@ -18,7 +18,7 @@ const cProfile = () => {
     const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
-        API.get('/api/users/profile', { withCredentials: true })
+        API.get('/users/profile', { withCredentials: true })
             .then(res => setProfile(res.data))
             .catch(err => console.error('Profile fetch failed', err));
     }, []);
@@ -27,7 +27,7 @@ const cProfile = () => {
     };
 
     const handleSave = () => {
-        API.put('/api/users/profile', profile, { withCredentials: true })
+        API.put('/users/profile', profile, { withCredentials: true })
             .then(() => setEditMode(false))
             .catch(err => console.error('Profile update failed', err));
     };

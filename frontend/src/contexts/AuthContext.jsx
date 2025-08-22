@@ -1,6 +1,7 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import API from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
@@ -13,8 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   // Check session when app loads
   useEffect(() => {
-    axios
-      .get('/api/auth/session', { withCredentials: true })
+    API.get('/api/auth/session', { withCredentials: true })
       .then(res => {
         if (res.data?.user) {
           setUser(res.data.user);
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   // Logout and clear session
   const logout = async () => {
     try {
-      await axios.post('/api/auth/logout', {}, { withCredentials: true });
+      await API.post('/api/auth/logout', {}, { withCredentials: true });
       setUser(null);
       navigate('/login'); // ✅ Redirect to login page
     } catch (err) {

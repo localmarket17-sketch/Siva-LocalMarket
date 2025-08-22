@@ -15,7 +15,7 @@ const MyOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await API.get(`/api/orders/user/${user.id}`);
+      const res = await API.get(`/orders/user/${user.id}`);
       setOrders(res.data.orders || res.data); // Support both response formats
     } catch (err) {
       console.error('Failed to fetch orders:', err);

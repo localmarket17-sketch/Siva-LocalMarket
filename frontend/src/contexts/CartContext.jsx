@@ -1,6 +1,7 @@
 // src/contexts/CartContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import API from '../../utils/api';
 import { useAuth } from './AuthContext'; // ✅ Import auth context
 
 const CartContext = createContext();
@@ -19,7 +20,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get('/api/cart/user/cart', {
+      const res = await API.get('/api/cart/user/cart', {
         withCredentials: true,
       });
       setCartItems(res.data);
@@ -30,7 +31,7 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = async (item) => {
     try {
-      await axios.post(
+      await API.post(
         '/api/cart/user/cart',
         {
           productId: item.id,
@@ -46,7 +47,7 @@ export const CartProvider = ({ children }) => {
 
   const updateQuantity = async (itemId, quantity) => {
     try {
-      await axios.put(
+      await API.put(
         `/api/cart/user/cart/${itemId}`,
         { quantity },
         { withCredentials: true }
@@ -59,7 +60,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = async (itemId) => {
     try {
-      await axios.delete(`/api/cart/user/cart/${itemId}`, {
+      await API.delete(`/api/cart/user/cart/${itemId}`, {
         withCredentials: true,
       });
       fetchCart();

@@ -25,10 +25,10 @@ const SubcategoryPage = () => {
   useEffect(() => {
     const fetchSubcategoryAndProducts = async () => {
       try {
-       const subRes = await API.get(`/api/subcategories/${subcategoryId}`);
+       const subRes = await API.get(`/subcategories/${subcategoryId}`);
         setSubcategory(subRes.data.subcategory);
 
-        const res = await API.get(`/api/subcategories/${subcategoryId}/products`);
+        const res = await API.get(`/subcategories/${subcategoryId}/products`);
         const productsWithBrands = res.data.map(p => ({
           ...p,
           brands: Array.isArray(p.brands) ? p.brands : [],

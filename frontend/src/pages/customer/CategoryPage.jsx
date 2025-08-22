@@ -26,10 +26,10 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await API.get(`/api/categories/${categoryId}`);
+        const catRes = await API.get(`/categories/${categoryId}`);
         setCategoryName(catRes.data.name);
 
-        const res = await API.get(`/api/categories/${categoryId}/products`);
+        const res = await API.get(`/categories/${categoryId}/products`);
         const productsWithBrands = res.data.map(p => ({
           ...p,
           brands: Array.isArray(p.brands) ? p.brands : []

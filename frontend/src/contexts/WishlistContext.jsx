@@ -1,6 +1,7 @@
 // src/contexts/WishlistContext.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import API from '../../utils/api';
 import { useAuth } from './AuthContext';
 
 const WishlistContext = createContext();
@@ -13,7 +14,7 @@ export const WishlistProvider = ({ children }) => {
     const fetchWishlist = async () => {
       try {
         if (!user?.id) return;
-        const res = await axios.get(`/api/wishlist/${user.id}`);
+        const res = await API.get(`/api/wishlist/${user.id}`);
         setWishlist(res.data);
       } catch (err) {
         console.error('Error fetching wishlist:', err);
@@ -26,7 +27,7 @@ export const WishlistProvider = ({ children }) => {
   const addToWishlist = async (product) => {
     try {
       if (!user?.id) return;
-      await axios.post('/api/wishlist', { userId: user.id, productId: product.id });
+      await API.post('/api/wishlist', { userId: user.id, productId: product.id });
       setWishlist((prev) => [...prev, product]);
     } catch (err) {
       console.error('Add to wishlist failed:', err);
@@ -36,7 +37,7 @@ export const WishlistProvider = ({ children }) => {
   const removeFromWishlist = async (productId) => {
     try {
       if (!user?.id) return;
-      await axios.delete(`/api/wishlist/${user.id}/${productId}`);
+      await API.delete(`/api/wishlist/${user.id}/${productId}`);
       setWishlist((prev) => prev.filter(p => p.id !== productId));
     } catch (err) {
       console.error('Remove from wishlist failed:', err);
