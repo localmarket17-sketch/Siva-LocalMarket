@@ -25,11 +25,11 @@ const BrandPage = () => {
     const fetchBrandProducts = async () => {
       try {
         const brandRes = await API.get(`/brands/${brandId}`);
-        const brandData = await brandRes.json();
+        const brandData = brandRes.data;
         setBrandName(brandData?.name || 'Brand');
 
         const productRes = await API.get(`/brands/${brandId}/products`);
-        const productData = await productRes.json();
+        const productData = productRes.data;
 
         // Ensure productsData is an array
         const productsArray = Array.isArray(productData) ? productData : productData?.products || [];
