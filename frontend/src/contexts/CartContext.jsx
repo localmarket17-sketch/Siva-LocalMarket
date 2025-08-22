@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
-      const res = await API.get('/api/cart/user/cart', {
+      const res = await API.get('/cart/user/cart', {
         withCredentials: true,
       });
       setCartItems(res.data);
@@ -32,7 +32,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (item) => {
     try {
       await API.post(
-        '/api/cart/user/cart',
+        '/cart/user/cart',
         {
           productId: item.id,
           quantity: 1,
@@ -48,7 +48,7 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = async (itemId, quantity) => {
     try {
       await API.put(
-        `/api/cart/user/cart/${itemId}`,
+        `/cart/user/cart/${itemId}`,
         { quantity },
         { withCredentials: true }
       );
@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = async (itemId) => {
     try {
-      await API.delete(`/api/cart/user/cart/${itemId}`, {
+      await API.delete(`/cart/user/cart/${itemId}`, {
         withCredentials: true,
       });
       fetchCart();

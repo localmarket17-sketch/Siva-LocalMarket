@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   // Check session when app loads
   useEffect(() => {
-    API.get('/api/auth/session', { withCredentials: true })
+    API.get('/auth/session', { withCredentials: true })
       .then(res => {
         if (res.data?.user) {
           setUser(res.data.user);
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   // Logout and clear session
   const logout = async () => {
     try {
-      await API.post('/api/auth/logout', {}, { withCredentials: true });
+      await API.post('/auth/logout', {}, { withCredentials: true });
       setUser(null);
       navigate('/login'); // ✅ Redirect to login page
     } catch (err) {
