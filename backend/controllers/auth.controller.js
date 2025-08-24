@@ -5,7 +5,6 @@ const sendEmail = require('../utils/sendEmail');
 
 const AuthController = {
   // ✅ Send OTP to email
-  // ✅ Send OTP to email
   sendOtp: async (req, res) => {
     const { name, email } = req.body;
 
@@ -21,11 +20,9 @@ const AuthController = {
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Format expires_at as MySQL DATETIME ('YYYY-MM-DD HH:MM:SS')
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000)
-      .toISOString()
-      .slice(0, 19)
-      .replace('T', ' ');
+    // Format expires_at as MySQL DATETIME in server local time ('YYYY-MM-DD HH:MM:SS')
+    const localDate = new Date(Date.now() + 5 * 60 * 1000);
+    const expiresAt = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}-${String(localDate.getDate()).padStart(2, '0')} ${String(localDate.getHours()).padStart(2, '0')}:${String(localDate.getMinutes()).padStart(2, '0')}:${String(localDate.getSeconds()).padStart(2, '0')}`;
 
     try {
       // Store or update OTP in otp_verification table
@@ -71,12 +68,12 @@ const AuthController = {
 
       const { otp, attempts, expires_at } = otpRows[0];
 
-      // Convert DB DATETIME string to JS Date
+      // Parse DB DATETIME as server local Date
       const now = new Date();
       const expiresAt = new Date(expires_at);
 
-      console.log('Now (UTC):', now.toISOString());
-      console.log('Expires At (UTC):', expiresAt.toISOString());
+      console.log('Now (local):', now.toString());
+      console.log('Expires At (local):', expiresAt.toString());
 
       if (now.getTime() > expiresAt.getTime()) {
         return res.status(400).json({ message: 'OTP expired, please request a new one' });
@@ -121,8 +118,6 @@ const AuthController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-
-
 
   // ✅ Login
   login: (req, res) => {
