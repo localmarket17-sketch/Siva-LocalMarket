@@ -49,6 +49,7 @@ const AuthController = {
     }
   },
 
+  // ✅ Verify OTP and register user
   verifyOtp: async (req, res) => {
     const { name, email, password, mobile, address, role, enteredOtp } = req.body;
 
@@ -119,6 +120,7 @@ const AuthController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
   // ✅ Login
   login: (req, res) => {
