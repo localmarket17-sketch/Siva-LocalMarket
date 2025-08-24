@@ -12,91 +12,124 @@ const AuthController = {
       return res.status(400).json({ message: 'Name and email are required' });
     }
 
-    // ✅ Email validation
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: 'Invalid email format' });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
 
     try {
-      // Optional: store OTP in DB with temporary user/email
-      const tempUserId = Date.now(); // simple example (replace with DB logic)
+      // Store or update OTP in otp_verification table
+      const sqlInsertOtp = `
+      INSERT INTO otp_verification (email, otp, attempts, expires_at)
+      VALUES (?, ?, 0, ?)
+      ON DUPLICATE KEY UPDATE otp = ?, attempts = 0, expires_at = ?
+    `;
+      db.query(sqlInsertOtp, [email, otp, expiresAt, otp, expiresAt], (err) => {
+        if (err) {
+          console.error('OTP DB error:', err);
+          return res.status(500).json({ message: 'Failed to save OTP' });
+        }
+      });
 
+      // Send OTP via email
       await sendEmail(
         email,
         'Email Verification OTP',
-        `<p>Hi ${name},</p><p>Your OTP is: <strong>${otp}</strong></p><p>Please enter it to complete your registration.</p>`
+        `<p>Hi ${name},</p><p>Your OTP is: <strong>${otp}</strong></p><p>Please enter it to complete your registration. OTP valid for 5 minutes.</p>`
       );
 
-      // Return 201 with userId
-      res.status(201).json({ message: 'OTP sent to email', userId: tempUserId });
+      res.status(201).json({ message: 'OTP sent to email' });
     } catch (err) {
       console.error('Email send error:', err);
       res.status(500).json({ message: 'Failed to send OTP email' });
     }
   },
 
-
-  // ✅ Register user after OTP is verified on frontend
+  // ✅ Verify OTP and register user
   verifyOtp: async (req, res) => {
-    const {
-      name,
-      email,
-      password,
-      mobile,
-      address,
-      role,
-      enteredOtp,
-      sentOtp
-    } = req.body;
+    const { name, email, password, mobile, address, role, enteredOtp } = req.body;
 
-    if (
-      !name || !email || !password || !mobile || !address || !role ||
-      !enteredOtp || !sentOtp
-    ) {
-      return res.status(400).json({ message: 'All fields including OTPs are required' });
-    }
-
-    if (enteredOtp !== sentOtp) {
-      return res.status(401).json({ message: 'Invalid OTP' });
+    if (!name || !email || !password || !mobile || !address || !role || !enteredOtp) {
+      return res.status(400).json({ message: 'All fields including OTP are required' });
     }
 
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const roleQuery = 'SELECT id FROM roles WHERE name = ?';
-      db.query(roleQuery, [role], (err, result) => {
-        if (err || result.length === 0) {
-          return res.status(400).json({ message: 'Invalid role', error: err });
+      // Check OTP from otp_verification table
+      const sqlCheckOtp = `
+      SELECT otp, attempts, expires_at 
+      FROM otp_verification 
+      WHERE email = ?
+    `;
+      db.query(sqlCheckOtp, [email], async (err, results) => {
+        if (err) {
+          console.error('OTP check error:', err);
+          return res.status(500).json({ message: 'Failed to verify OTP' });
         }
 
-        const role_id = result[0].id;
+        if (results.length === 0) {
+          return res.status(404).json({ message: 'OTP not found, please request again' });
+        }
 
-        const sql = `
-        INSERT INTO users (name, email, password, mobile, address, role_id)
-        VALUES (?, ?, ?, ?, ?, ?)
-      `;
+        const { otp, attempts, expires_at } = results[0];
+        const now = new Date();
 
-        db.query(
-          sql,
-          [name, email, hashedPassword, mobile, address || null, role_id],
-          (err, result) => {
+        if (now > expires_at) {
+          return res.status(400).json({ message: 'OTP expired, please request a new one' });
+        }
+
+        if (attempts >= 5) {
+          return res.status(400).json({ message: 'Maximum OTP attempts reached' });
+        }
+
+        if (enteredOtp !== otp) {
+          // Increment attempts
+          const sqlUpdateAttempts = `UPDATE otp_verification SET attempts = attempts + 1 WHERE email = ?`;
+          db.query(sqlUpdateAttempts, [email]);
+          return res.status(401).json({ message: 'Invalid OTP' });
+        }
+
+        // OTP is valid, hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Get role_id
+        const roleQuery = 'SELECT id FROM roles WHERE name = ?';
+        db.query(roleQuery, [role], (err, result) => {
+          if (err || result.length === 0) {
+            return res.status(400).json({ message: 'Invalid role', error: err });
+          }
+
+          const role_id = result[0].id;
+
+          // Insert user
+          const sqlInsertUser = `
+          INSERT INTO users (name, email, password, mobile, address, role_id)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `;
+          db.query(sqlInsertUser, [name, email, hashedPassword, mobile, address, role_id], (err) => {
             if (err) {
               console.error('Registration error:', err);
               return res.status(500).json({ message: 'Registration failed' });
             }
 
-            return res.status(200).json({ message: 'User registered and OTP verified successfully' });
-          }
-        );
+            // Delete OTP row
+            const sqlDeleteOtp = `DELETE FROM otp_verification WHERE email = ?`;
+            db.query(sqlDeleteOtp, [email]);
+
+            res.status(200).json({ message: 'User registered successfully' });
+          });
+        });
       });
     } catch (err) {
-      console.error('Hashing error:', err);
+      console.error('Verification error:', err);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
+
 
   // ✅ Login
   login: (req, res) => {

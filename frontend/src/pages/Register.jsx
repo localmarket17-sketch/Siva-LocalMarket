@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API from '../utils/api';
@@ -15,20 +15,47 @@ const Register = () => {
     mobile: '',
   });
   const [otp, setOtp] = useState('');
+  const [intervalId, setIntervalId] = useState(null);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [canResend, setCanResend] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "mobile") {
+      // allow only numbers and max 10 digits
+      const cleaned = value.replace(/\D/g, "").slice(0, 10);
+      setFormData({ ...formData, [name]: cleaned });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  // Add this function before the handlers
+  const startOtpTimer = () => {
+    if (intervalId) clearInterval(intervalId); 
+    setOtpTimer(300); // 5 minutes
+    setCanResend(false);
+    const interval = setInterval(() => {
+      setOtpTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setCanResend(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    setIntervalId(interval);
   };
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
 
-    // ✅ Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!formData.email || !emailRegex.test(formData.email)) {
       alert("Please enter a valid email address.");
       return;
@@ -39,11 +66,12 @@ const Register = () => {
       const res = await API.post(
         '/auth/send-otp',
         { name: formData.name, email: formData.email },
-        { withCredentials: true } // explicitly send cookies
+        { withCredentials: true }
       );
 
       if ([200, 201, 204].includes(res.status)) {
         setOtpSent(true);
+        startOtpTimer(); // start OTP countdown
         alert("OTP sent to your email");
       }
     } catch (err) {
@@ -53,6 +81,30 @@ const Register = () => {
       setLoading(false);
     }
   };
+
+  const handleResendOtp = async () => {
+    if (!canResend) return;
+
+    try {
+      setLoading(true);
+      const res = await API.post(
+        '/auth/send-otp',
+        { name: formData.name, email: formData.email },
+        { withCredentials: true }
+      );
+
+      if ([200, 201, 204].includes(res.status)) {
+        startOtpTimer(); // restart OTP countdown
+        alert('OTP resent to your email');
+      }
+    } catch (err) {
+      console.error('Resend OTP error:', err);
+      alert(err.response?.data?.message || 'Failed to resend OTP');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
 
   const handleVerifyOtp = async (e) => {
@@ -64,8 +116,7 @@ const Register = () => {
       const res = await API.post(
         '/auth/verify-otp',
         {
-          enteredOtp: otp,
-          sentOtp: otp, // ⚠️ TEMPORARY FIX — backend should store OTP server-side ideally
+          enteredOtp: otp, // ⚠️ TEMPORARY FIX — backend should store OTP server-side ideally
           role,
           ...formData,
         },
@@ -88,7 +139,7 @@ const Register = () => {
     const { shopName, name, email, password, address, mobile } = formData;
     if (!role) return false;
     if (role === 'vendor' && !shopName) return false;
-    return name && email && password && address && mobile;
+    return name && email && password && address && mobile.length === 10;
   };
 
   const renderFields = () => {
@@ -108,12 +159,25 @@ const Register = () => {
         <label>Password</label>
         <input type="password" name="password" value={formData.password} onChange={handleChange} />
         <label>Mobile No.</label>
-        <input type="text" name="mobile" value={formData.mobile} onChange={handleChange} />
+        <input
+          type="text"
+          name="mobile"
+          value={formData.mobile}
+          onChange={handleChange}
+          maxLength="10"
+          placeholder="Enter 10-digit mobile"
+        />
         <label>{role === 'vendor' ? 'Shop Address' : 'Full Address'}</label>
         <textarea name="address" value={formData.address} onChange={handleChange} rows="3" />
       </>
     );
   };
+
+  useEffect(() => {
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [intervalId]);
 
   return (
     <div className="register-wrapper">
@@ -157,16 +221,25 @@ const Register = () => {
                 {role === 'vendor' && <p><strong>Shop Name:</strong> {formData.shopName}</p>}
 
                 <label>Enter OTP</label>
+                <p>OTP expires in: {Math.floor(otpTimer / 60)}:{(otpTimer % 60).toString().padStart(2, '0')}</p>
+                {otpTimer === 0 && (
+                  <p>
+                    OTP expired.{' '}
+                    <button type="button" onClick={handleResendOtp} className="resend-link">
+                      Resend OTP
+                    </button>
+                  </p>
+                )}
                 <input
                   type="text"
                   value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} // only numbers, max 6 digits
                   placeholder="Enter the OTP sent to email"
                 />
                 <button
                   type="button"
                   onClick={handleVerifyOtp}
-                  disabled={!otp || loading}
+                  disabled={!otp || loading || otpTimer === 0}
                 >
                   {loading ? 'Verifying...' : 'Verify OTP & Continue'}
                 </button>
