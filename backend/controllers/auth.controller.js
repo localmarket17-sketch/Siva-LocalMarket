@@ -6,6 +6,7 @@ const sendEmail = require('../utils/sendEmail');
 const AuthController = {
   // ✅ Send OTP to email
   // ✅ Send OTP
+  // ✅ Send OTP
   sendOtp: async (req, res) => {
     const { name, email } = req.body;
 
@@ -20,7 +21,7 @@ const AuthController = {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // UTC ISO string
 
     try {
       // Store or update OTP in otp_verification table using promise
@@ -65,9 +66,11 @@ const AuthController = {
       }
 
       const { otp, attempts, expires_at } = otpRows[0];
-      const now = new Date();
-      const expiresAt = new Date(expires_at); // ensure DB value converted to JS Date
-      console.log('Now:', now.toISOString(), 'Expires At:', expiresAt.toISOString());
+      const now = new Date(); // current UTC time
+      const expiresAt = new Date(expires_at); // DB value as Date (UTC)
+
+      console.log('Now (UTC):', now.toISOString());
+      console.log('Expires At (UTC):', expiresAt.toISOString());
 
       if (now.getTime() > expiresAt.getTime()) {
         return res.status(400).json({ message: 'OTP expired, please request a new one' });
@@ -112,6 +115,7 @@ const AuthController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
 
 
