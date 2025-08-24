@@ -5,6 +5,7 @@ const sendEmail = require('../utils/sendEmail');
 
 const AuthController = {
   // ✅ Send OTP to email
+  // ✅ Send OTP
   sendOtp: async (req, res) => {
     const { name, email } = req.body;
 
@@ -19,21 +20,16 @@ const AuthController = {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
     try {
-      // Store or update OTP in otp_verification table
+      // Store or update OTP in otp_verification table using promise
       const sqlInsertOtp = `
       INSERT INTO otp_verification (email, otp, attempts, expires_at)
       VALUES (?, ?, 0, ?)
       ON DUPLICATE KEY UPDATE otp = ?, attempts = 0, expires_at = ?
     `;
-      db.query(sqlInsertOtp, [email, otp, expiresAt, otp, expiresAt], (err) => {
-        if (err) {
-          console.error('OTP DB error:', err);
-          return res.status(500).json({ message: 'Failed to save OTP' });
-        }
-      });
+      await db.promise().query(sqlInsertOtp, [email, otp, expiresAt, otp, expiresAt]);
 
       // Send OTP via email
       await sendEmail(
@@ -44,8 +40,8 @@ const AuthController = {
 
       res.status(201).json({ message: 'OTP sent to email' });
     } catch (err) {
-      console.error('Email send error:', err);
-      res.status(500).json({ message: 'Failed to send OTP email' });
+      console.error('Send OTP error:', err);
+      res.status(500).json({ message: 'Failed to send OTP' });
     }
   },
 
@@ -70,9 +66,9 @@ const AuthController = {
 
       const { otp, attempts, expires_at } = otpRows[0];
       const now = new Date();
-      const expiresAt = new Date(expires_at); // convert DB value to Date
+      const expiresAt = new Date(expires_at); // ensure DB value converted to JS Date
 
-      if (now > expiresAt) {
+      if (now.getTime() > expiresAt.getTime()) {
         return res.status(400).json({ message: 'OTP expired, please request a new one' });
       }
 
@@ -82,7 +78,10 @@ const AuthController = {
 
       if (enteredOtp !== otp) {
         // Increment attempts
-        await db.promise().query(`UPDATE otp_verification SET attempts = attempts + 1 WHERE email = ?`, [email]);
+        await db.promise().query(
+          `UPDATE otp_verification SET attempts = attempts + 1 WHERE email = ?`,
+          [email]
+        );
         return res.status(401).json({ message: 'Invalid OTP' });
       }
 
@@ -108,10 +107,11 @@ const AuthController = {
 
       res.status(200).json({ message: 'User registered successfully' });
     } catch (err) {
-      console.error('Verification error:', err);
+      console.error('Verify OTP error:', err);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
 
 
