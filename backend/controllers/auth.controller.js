@@ -68,14 +68,14 @@ const AuthController = {
 
       const { otp, attempts, expires_at } = otpRows[0];
 
-      // Parse DB DATETIME as server local Date
+      // Convert DB expires_at to server timezone for comparison
       const now = new Date();
-      const expiresAt = new Date(expires_at);
+      const expiresAtLocal = new Date(expires_at + ' UTC'); // Treat DB time as UTC string
 
-      console.log('Now (local):', now.toString());
-      console.log('Expires At (local):', expiresAt.toString());
+      console.log('Now (server UTC):', now.toISOString());
+      console.log('Expires At (converted):', expiresAtLocal.toISOString());
 
-      if (now.getTime() > expiresAt.getTime()) {
+      if (now.getTime() > expiresAtLocal.getTime()) {
         return res.status(400).json({ message: 'OTP expired, please request a new one' });
       }
 
@@ -118,6 +118,7 @@ const AuthController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
   // ✅ Login
   login: (req, res) => {
