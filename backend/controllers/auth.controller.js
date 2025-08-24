@@ -70,8 +70,9 @@ const AuthController = {
 
       const { otp, attempts, expires_at } = otpRows[0];
       const now = new Date();
+      const expiresAt = new Date(expires_at); // convert DB value to Date
 
-      if (now > expires_at) {
+      if (now > expiresAt) {
         return res.status(400).json({ message: 'OTP expired, please request a new one' });
       }
 
