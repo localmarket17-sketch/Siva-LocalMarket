@@ -59,75 +59,59 @@ const AuthController = {
 
     try {
       // Check OTP from otp_verification table
-      const sqlCheckOtp = `
-      SELECT otp, attempts, expires_at 
-      FROM otp_verification 
-      WHERE email = ?
-    `;
-      db.query(sqlCheckOtp, [email], async (err, results) => {
-        if (err) {
-          console.error('OTP check error:', err);
-          return res.status(500).json({ message: 'Failed to verify OTP' });
-        }
+      const [otpRows] = await db.promise().query(
+        `SELECT otp, attempts, expires_at FROM otp_verification WHERE email = ?`,
+        [email]
+      );
 
-        if (results.length === 0) {
-          return res.status(404).json({ message: 'OTP not found, please request again' });
-        }
+      if (otpRows.length === 0) {
+        return res.status(404).json({ message: 'OTP not found, please request again' });
+      }
 
-        const { otp, attempts, expires_at } = results[0];
-        const now = new Date();
+      const { otp, attempts, expires_at } = otpRows[0];
+      const now = new Date();
 
-        if (now > expires_at) {
-          return res.status(400).json({ message: 'OTP expired, please request a new one' });
-        }
+      if (now > expires_at) {
+        return res.status(400).json({ message: 'OTP expired, please request a new one' });
+      }
 
-        if (attempts >= 5) {
-          return res.status(400).json({ message: 'Maximum OTP attempts reached' });
-        }
+      if (attempts >= 5) {
+        return res.status(400).json({ message: 'Maximum OTP attempts reached' });
+      }
 
-        if (enteredOtp !== otp) {
-          // Increment attempts
-          const sqlUpdateAttempts = `UPDATE otp_verification SET attempts = attempts + 1 WHERE email = ?`;
-          db.query(sqlUpdateAttempts, [email]);
-          return res.status(401).json({ message: 'Invalid OTP' });
-        }
+      if (enteredOtp !== otp) {
+        // Increment attempts
+        await db.promise().query(`UPDATE otp_verification SET attempts = attempts + 1 WHERE email = ?`, [email]);
+        return res.status(401).json({ message: 'Invalid OTP' });
+      }
 
-        // OTP is valid, hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+      // OTP is valid, hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Get role_id
-        const roleQuery = 'SELECT id FROM roles WHERE name = ?';
-        db.query(roleQuery, [role], (err, result) => {
-          if (err || result.length === 0) {
-            return res.status(400).json({ message: 'Invalid role', error: err });
-          }
+      // Get role_id
+      const [roleRows] = await db.promise().query(`SELECT id FROM roles WHERE name = ?`, [role]);
+      if (roleRows.length === 0) {
+        return res.status(400).json({ message: 'Invalid role' });
+      }
+      const role_id = roleRows[0].id;
 
-          const role_id = result[0].id;
+      // Insert user
+      await db.promise().query(
+        `INSERT INTO users (name, email, password, mobile, address, role_id)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+        [name, email, hashedPassword, mobile, address, role_id]
+      );
 
-          // Insert user
-          const sqlInsertUser = `
-          INSERT INTO users (name, email, password, mobile, address, role_id)
-          VALUES (?, ?, ?, ?, ?, ?)
-        `;
-          db.query(sqlInsertUser, [name, email, hashedPassword, mobile, address, role_id], (err) => {
-            if (err) {
-              console.error('Registration error:', err);
-              return res.status(500).json({ message: 'Registration failed' });
-            }
+      // Delete OTP row
+      await db.promise().query(`DELETE FROM otp_verification WHERE email = ?`, [email]);
 
-            // Delete OTP row
-            const sqlDeleteOtp = `DELETE FROM otp_verification WHERE email = ?`;
-            db.query(sqlDeleteOtp, [email]);
-
-            res.status(200).json({ message: 'User registered successfully' });
-          });
-        });
-      });
+      res.status(200).json({ message: 'User registered successfully' });
     } catch (err) {
       console.error('Verification error:', err);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
 
 
