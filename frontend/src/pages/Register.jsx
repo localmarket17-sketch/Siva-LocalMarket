@@ -36,7 +36,7 @@ const Register = () => {
 
   // Add this function before the handlers
   const startOtpTimer = () => {
-    if (intervalId) clearInterval(intervalId); 
+    if (intervalId) clearInterval(intervalId);
     setOtpTimer(300); // 5 minutes
     setCanResend(false);
     const interval = setInterval(() => {
@@ -129,7 +129,7 @@ const Register = () => {
         navigate('/login');
       }
     } catch (err) {
-      console.error('Verify OTP error:', err);
+      console.error('Verify OTP server message:', err.response?.data?.message);
       alert(err.response?.data?.message || 'Failed to verify OTP');
     } finally {
       setLoading(false);
