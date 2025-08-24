@@ -5,6 +5,7 @@ const sendEmail = require('../utils/sendEmail');
 
 const AuthController = {
   // ✅ Send OTP to email
+  // ✅ Send OTP to email
   sendOtp: async (req, res) => {
     const { name, email } = req.body;
 
@@ -120,6 +121,7 @@ const AuthController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
 
   // ✅ Login
