@@ -22,20 +22,19 @@ const AuthController = {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     // Use UTC for expires_at
-    const nowUtc = new Date(); // current UTC time
+    const nowUtc = new Date();
     const expiresAtUtc = new Date(nowUtc.getTime() + 5 * 60 * 1000); // 5 minutes later
-    const expiresAtStr = expiresAtUtc.toISOString().slice(0, 19).replace('T', ' '); // MySQL DATETIME format
+    const expiresAtStr = expiresAtUtc.toISOString().slice(0, 19).replace('T', ' ');
 
     try {
-      // Store or update OTP in otp_verification table
+      // Always overwrite old OTP for same email
       const sqlInsertOtp = `
       INSERT INTO otp_verification (email, otp, attempts, expires_at)
       VALUES (?, ?, 0, ?)
-      ON DUPLICATE KEY UPDATE otp = ?, attempts = 0, expires_at = ?
+      ON DUPLICATE KEY UPDATE otp = VALUES(otp), attempts = 0, expires_at = VALUES(expires_at)
     `;
-      await db.promise().query(sqlInsertOtp, [email, otp, expiresAtStr, otp, expiresAtStr]);
+      await db.promise().query(sqlInsertOtp, [email, otp, expiresAtStr]);
 
-      // Send OTP via email
       await sendEmail(
         email,
         'Email Verification OTP',
@@ -64,63 +63,62 @@ const AuthController = {
       );
 
       if (otpRows.length === 0) {
-        return res.status(404).json({ message: 'OTP not found, please request again' });
+        return res.status(404).json({ message: 'OTP not found. Please request a new OTP.' });
       }
 
       const { otp, attempts, expires_at } = otpRows[0];
-
-      // Compare UTC times directly
       const nowUtc = new Date();
-      const expiresAtUtc = new Date(expires_at); // DB stored in UTC
-
-      console.log('Now (UTC):', nowUtc.toISOString());
-      console.log('Expires At (UTC):', expiresAtUtc.toISOString());
+      const expiresAtUtc = new Date(expires_at);
 
       if (nowUtc.getTime() > expiresAtUtc.getTime()) {
-        return res.status(400).json({ message: 'OTP expired, please request a new one' });
+        return res.status(400).json({ message: 'OTP expired. Please request a new OTP.' });
       }
 
       if (attempts >= 5) {
-        return res.status(400).json({ message: 'Maximum OTP attempts reached' });
+        return res.status(400).json({ message: 'Maximum OTP attempts reached. Request a new OTP.' });
       }
 
       if (enteredOtp !== otp) {
-        // Increment attempts
         await db.promise().query(
           `UPDATE otp_verification SET attempts = attempts + 1 WHERE email = ?`,
           [email]
         );
-        return res.status(401).json({ message: 'Invalid OTP' });
+        return res.status(401).json({ message: 'Invalid OTP. Please check and try again.' });
       }
 
-      // OTP is valid, hash password
+      // Check if mobile or email already registered
+      const [existing] = await db.promise().query(
+        `SELECT id FROM users WHERE email = ? OR mobile = ?`,
+        [email, mobile]
+      );
+      if (existing.length > 0) {
+        await db.promise().query(`DELETE FROM otp_verification WHERE email = ?`, [email]);
+        return res.status(400).json({ message: 'Email or mobile already registered. Use different credentials.' });
+      }
+
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Get role_id
       const [roleRows] = await db.promise().query(`SELECT id FROM roles WHERE name = ?`, [role]);
       if (roleRows.length === 0) {
-        return res.status(400).json({ message: 'Invalid role' });
+        return res.status(400).json({ message: 'Invalid role selected.' });
       }
       const role_id = roleRows[0].id;
 
-      // Insert user
       await db.promise().query(
         `INSERT INTO users (name, email, password, mobile, address, role_id)
        VALUES (?, ?, ?, ?, ?, ?)`,
         [name, email, hashedPassword, mobile, address, role_id]
       );
 
-      // Delete OTP row
       await db.promise().query(`DELETE FROM otp_verification WHERE email = ?`, [email]);
 
-      res.status(200).json({ message: 'User registered successfully' });
+      res.status(200).json({ message: 'User registered successfully.' });
     } catch (err) {
       console.error('Verify OTP error:', err);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ message: 'Server error during registration. Please try again later.' });
     }
   },
-
-
 
   // ✅ Login
   login: (req, res) => {
