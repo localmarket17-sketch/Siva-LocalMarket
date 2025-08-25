@@ -86,136 +86,166 @@ const AppRoutes = () => {
 
 
       {/* Customer Routes with CartProvider and SearchProvider */}
-      <SearchProvider>
-        <Route
-          path="/"
-          element={
+
+      <Route
+        path="/"
+        element={
+          <SearchProvider>
             <CartProvider>
               <Shop />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/category/:categoryId"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/category/:categoryId"
+        element={
+          <SearchProvider>
             <CartProvider>
               <WishlistProvider>
                 <CategoryPage />
               </WishlistProvider>
             </CartProvider>
-          }
-        />
-        <Route
-          path="/categories"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/categories"
+        element={
+          <SearchProvider>
             <CartProvider>
               <CategoriesPage />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/brand/:brandId"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/brand/:brandId"
+        element={
+          <SearchProvider>
             <CartProvider>
               <WishlistProvider>
                 <BrandPage />
               </WishlistProvider>
             </CartProvider>
-          }
-        />
-        <Route
-          path="/subcategory/:subcategoryId"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/subcategory/:subcategoryId"
+        element={
+          <SearchProvider>
             <CartProvider>
               <WishlistProvider>
                 <SubcategoryPage />
               </WishlistProvider>
             </CartProvider>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <SearchProvider>
             <CartProvider>
               <CProfile />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/product/:productId"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/product/:productId"
+        element={
+          <SearchProvider>
             <CartProvider>
               <WishlistProvider>
                 <ProductDetails />
               </WishlistProvider>
             </CartProvider>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+          <SearchProvider>
             <CartProvider>
               <Cart />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/notifications"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <SearchProvider>
             <CartProvider>
               <NotificationBell />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/checkout"
+        element={
+          <SearchProvider>
             <CartProvider>
               <Checkout />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/myorders"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/myorders"
+        element={
+          <SearchProvider>
             <CartProvider>
               <OrderHistory />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/wishlist"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/wishlist"
+        element={
+          <SearchProvider>
             <CartProvider>
               <Wishlist />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/support"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/support"
+        element={
+          <SearchProvider>
             <CartProvider>
               <Support />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/wishlist"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/wishlist"
+        element={
+          <SearchProvider>
             <CartProvider>
               <WishlistPage />
             </CartProvider>
-          }
-        />
-        <Route
-          path="/account"
-          element={
+          </SearchProvider>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <SearchProvider>
             <CartProvider>
               <MyAccount />
             </CartProvider>
-          }
-        />
-      </SearchProvider>
+          </SearchProvider>
+        }
+      />
+
 
       {/* Common Routes */}
       <Route path="/login" element={
