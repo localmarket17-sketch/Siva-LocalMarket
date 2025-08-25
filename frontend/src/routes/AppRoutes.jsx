@@ -249,9 +249,11 @@ const AppRoutes = () => {
 
       {/* Common Routes */}
       <Route path="/login" element={
-        <CartProvider>
-          <Login />
-        </CartProvider>
+        <SearchProvider>
+          <CartProvider>
+            <Login />
+          </CartProvider>
+        </SearchProvider>
       } />
       <Route path="/register" element={<Register />} />
     </Routes>
