@@ -18,11 +18,13 @@ const AuthController = {
       return res.status(400).json({ message: 'Invalid email format' });
     }
 
+    // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Format expires_at as MySQL DATETIME in server local time ('YYYY-MM-DD HH:MM:SS')
-    const localDate = new Date(Date.now() + 5 * 60 * 1000);
-    const expiresAt = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}-${String(localDate.getDate()).padStart(2, '0')} ${String(localDate.getHours()).padStart(2, '0')}:${String(localDate.getMinutes()).padStart(2, '0')}:${String(localDate.getSeconds()).padStart(2, '0')}`;
+    // Use UTC for expires_at
+    const nowUtc = new Date(); // current UTC time
+    const expiresAtUtc = new Date(nowUtc.getTime() + 5 * 60 * 1000); // 5 minutes later
+    const expiresAtStr = expiresAtUtc.toISOString().slice(0, 19).replace('T', ' '); // MySQL DATETIME format
 
     try {
       // Store or update OTP in otp_verification table
@@ -31,7 +33,7 @@ const AuthController = {
       VALUES (?, ?, 0, ?)
       ON DUPLICATE KEY UPDATE otp = ?, attempts = 0, expires_at = ?
     `;
-      await db.promise().query(sqlInsertOtp, [email, otp, expiresAt, otp, expiresAt]);
+      await db.promise().query(sqlInsertOtp, [email, otp, expiresAtStr, otp, expiresAtStr]);
 
       // Send OTP via email
       await sendEmail(
@@ -47,7 +49,6 @@ const AuthController = {
     }
   },
 
-  // ✅ Verify OTP and register user
   verifyOtp: async (req, res) => {
     const { name, email, password, mobile, address, role, enteredOtp } = req.body;
 
@@ -56,7 +57,7 @@ const AuthController = {
     }
 
     try {
-      // Check OTP from otp_verification table
+      // Fetch OTP from DB
       const [otpRows] = await db.promise().query(
         `SELECT otp, attempts, expires_at FROM otp_verification WHERE email = ?`,
         [email]
@@ -68,14 +69,14 @@ const AuthController = {
 
       const { otp, attempts, expires_at } = otpRows[0];
 
-      // Convert DB expires_at to server timezone for comparison
-      const now = new Date();
-      const expiresAtLocal = new Date(expires_at + ' UTC'); // Treat DB time as UTC string
+      // Compare UTC times directly
+      const nowUtc = new Date();
+      const expiresAtUtc = new Date(expires_at); // DB stored in UTC
 
-      console.log('Now (server UTC):', now.toISOString());
-      console.log('Expires At (converted):', expiresAtLocal.toISOString());
+      console.log('Now (UTC):', nowUtc.toISOString());
+      console.log('Expires At (UTC):', expiresAtUtc.toISOString());
 
-      if (now.getTime() > expiresAtLocal.getTime()) {
+      if (nowUtc.getTime() > expiresAtUtc.getTime()) {
         return res.status(400).json({ message: 'OTP expired, please request a new one' });
       }
 
@@ -118,6 +119,7 @@ const AuthController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
 
 
   // ✅ Login
