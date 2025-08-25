@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -6,6 +6,7 @@ import API from '../../utils/api';
 import CategoryNavBar from '../../components/CategoryNavBar';
 import ProductFilter from '../../components/FilterSortPanel';
 import { useCart } from '../../contexts/CartContext';
+import { SearchContext } from '../../contexts/SearchContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import RImg from '../../assets/R.png';
 import './BrandPage.css';
@@ -16,7 +17,7 @@ const BrandPage = () => {
   const navigate = useNavigate();
   const { cartItems, addToCart, removeFromCart, getCartQty, updateQuantity } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-
+  const { searchQuery } = useContext(SearchContext);
   const [brandName, setBrandName] = useState('');
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -105,6 +106,10 @@ const BrandPage = () => {
     }
   };
 
+  const displayedProducts = filteredProducts.filter(p =>
+    p.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="brand-page">
       <Navbar />
@@ -123,9 +128,9 @@ const BrandPage = () => {
         <div className="category-products">
           <h2 className="brand-title">Brand: {brandName}</h2>
 
-          {filteredProducts.length > 0 ? (
+          {displayedProducts.length > 0 ? (
             <div className="products-grid">
-              {filteredProducts.map((product) => {
+              {displayedProducts.map((product) => {
                 const quantity = getCartQty(product.id);
                 return (
                   <div className="product-card" key={`${product.id}-${quantity}`}>

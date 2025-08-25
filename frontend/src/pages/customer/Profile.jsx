@@ -51,7 +51,16 @@ const cProfile = () => {
                     </div>
                     <div className="profile-info">
                         <label>Email:</label>
-                        <p>{profile.email}</p>
+                        {editMode ? (
+                            <input
+                                type="email"
+                                name="email"
+                                value={profile.email}
+                                onChange={handleChange}
+                            />
+                        ) : (
+                            <p>{profile.email}</p>
+                        )}
                     </div>
                     <div className="profile-info">
                         <label>Mobile:</label>

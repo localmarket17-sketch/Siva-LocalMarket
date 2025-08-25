@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { SearchContext } from '../../contexts/SearchContext';
 import CartEmptyImg from '../../assets/cart-empty.jpg';
 
 const Cart = () => {
   const navigate = useNavigate();
   const { cartItems, updateQuantity, removeFromCart } = useCart();
+  const { searchQuery } = useContext(SearchContext);
   const { isAuthenticated: isLoggedIn } = useAuth();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -39,6 +41,9 @@ const Cart = () => {
       updateQuantity(id, currentQty - 1);
     }
   };
+  const filteredCartItems = cartItems.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const total = cartItems
     .filter((item) => selectedItems.includes(item.id))
@@ -83,7 +88,7 @@ const Cart = () => {
 
           <div className={`cart-content ${isMobile ? 'mobile' : 'desktop'}`}>
             <div className="cart-items-grid">
-              {cartItems.map((item) => (
+              {filteredCartItems.map((item) => (
                 <div
                   key={item.id}
                   className={`cart-item-card ${selectedItems.includes(item.id) ? 'selected' : ''}`}

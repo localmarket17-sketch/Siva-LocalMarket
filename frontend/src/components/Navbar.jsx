@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { throttle } from 'lodash';
+import { SearchContext } from '../contexts/SearchContext';
 import { AuthContext } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import axios from 'axios';
 
-const Navbar = ({ onSearch }) => {
+const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const { setSearchQuery } = useContext(SearchContext);
   const { cartItems } = useCart();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [location, setLocation] = useState('Fetching...');
-  const [showDelivery, setShowDelivery] = useState(true);
+  const [showDelivery] = useState(true);
   const navigate = useNavigate();
 
   // Fetch location
@@ -23,37 +25,8 @@ const Navbar = ({ onSearch }) => {
     }
   }, [user]);
 
-  // Hide delivery bar on scroll
-  useEffect(() => {
-    let lastScroll = window.scrollY;
-    let scrollingDown = false;
-
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-
-      if (currentScroll > lastScroll + 5) { // scrolling down
-        if (!scrollingDown) {
-          setShowDelivery(false);
-          scrollingDown = true;
-        }
-      } else if (currentScroll < lastScroll - 5) { // scrolling up
-        if (scrollingDown) {
-          setShowDelivery(true);
-          scrollingDown = false;
-        }
-      } else if (currentScroll < 50) { // near top
-        setShowDelivery(true);
-      }
-
-      lastScroll = currentScroll;
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const handleSearch = (e) => {
-    if (onSearch) onSearch(e.target.value);
+    setSearchQuery(e.target.value);
   };
 
   const toggleDropdown = () => setDropdownOpen(prev => !prev);

@@ -1,8 +1,9 @@
 // src/pages/customer/Wishlist.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from "../../contexts/CartContext";
+import { SearchContext } from '../../contexts/SearchContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import API from '../../utils/api';
@@ -14,6 +15,7 @@ const Wishlist = () => {
   const { addToCart, fetchCart } = useCart();
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { searchQuery } = useContext(SearchContext);
 
   const fetchWishlist = async () => {
     try {
@@ -25,6 +27,10 @@ const Wishlist = () => {
       setLoading(false);
     }
   };
+
+  const filteredWishlist = wishlist.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const removeFromWishlist = async (productId) => {
     try {
@@ -80,7 +86,7 @@ const Wishlist = () => {
           <p className="text-gray-600">Your wishlist is empty.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {wishlist.map((item) => (
+            {filteredWishlist.map((item) => (
               <div key={item.id} className="wishlist-card">
                 <div className="wishlist-card-img-wrapper">
                   <img

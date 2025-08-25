@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
 import { Autoplay } from 'swiper/modules';
+import { SearchContext } from '../../contexts/SearchContext';
 import 'swiper/css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -27,6 +28,7 @@ const Shop = () => {
   const [categories, setCategories] = useState([]);
   const [descriptions, setDescriptions] = useState({});
   const [subcategories, setSubcategories] = useState({});
+  const { searchQuery } = useContext(SearchContext);
   const [brands, setBrands] = useState([]);
   const navigate = useNavigate();
   const banners = [
@@ -177,16 +179,19 @@ const Shop = () => {
 
           <div className="subcategory-grid">
             {Array.isArray(subcategories[cat.name])
-              ? subcategories[cat.name].slice(0, 10).map((sub) => (
-                <Link to={`/subcategory/${sub.id}`} className="subcategory-card" key={sub.id}>
-                  <img src={sub.image || RImg} alt={sub.name} onError={e => e.target.src = RImg} />
-                  <span>{sub.name}</span>
-                </Link>
-              ))
+              ? subcategories[cat.name]
+                .filter(sub => sub.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                .slice(0, 10)
+                .map((sub) => (
+                  <Link to={`/subcategory/${sub.id}`} className="subcategory-card" key={sub.id}>
+                    <img src={sub.image || RImg} alt={sub.name} onError={e => e.target.src = RImg} />
+                    <span>{sub.name}</span>
+                  </Link>
+                ))
               : null
             }
-
           </div>
+
 
           {/* Insert banner strip after every 2 categories */}
           {(index + 1) % 2 === 0 && renderBannerCarousel()}

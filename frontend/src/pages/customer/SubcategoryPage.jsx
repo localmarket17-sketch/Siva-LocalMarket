@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../../components/Navbar';
@@ -8,6 +8,7 @@ import CategoryNavbar from '../../components/CategoryNavBar';
 import ProductFilter from '../../components/FilterSortPanel';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useCart } from '../../contexts/CartContext';
+import { SearchContext } from '../../contexts/SearchContext';
 import './SubcategoryPage.css';
 import RImg from '../../assets/R.png';
 import { Plus, Minus } from 'lucide-react';
@@ -17,7 +18,7 @@ const SubcategoryPage = () => {
   const navigate = useNavigate();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { cartItems, addToCart, removeFromCart, getCartQty, updateQuantity } = useCart();
-
+  const { searchQuery } = useContext(SearchContext);
   const [subcategory, setSubcategory] = useState(null);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -25,7 +26,7 @@ const SubcategoryPage = () => {
   useEffect(() => {
     const fetchSubcategoryAndProducts = async () => {
       try {
-       const subRes = await API.get(`/subcategories/${subcategoryId}`);
+        const subRes = await API.get(`/subcategories/${subcategoryId}`);
         setSubcategory(subRes.data.subcategory);
 
         const res = await API.get(`/subcategories/${subcategoryId}/products`);
@@ -78,6 +79,9 @@ const SubcategoryPage = () => {
     setFilteredProducts(filtered);
   };
 
+  const displayedProducts = filteredProducts.filter(p =>
+    p.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const toggleWishlist = (e, product) => {
     e.stopPropagation();
     if (isInWishlist(product.id)) removeFromWishlist(product.id);
@@ -119,9 +123,9 @@ const SubcategoryPage = () => {
 
         {/* Products section */}
         <div className="category-products">
-          {filteredProducts.length > 0 ? (
+          {displayedProducts.length > 0 ? (
             <div className="products-grid">
-              {filteredProducts.map(product => {
+              {displayedProducts.map(product => {
                 const quantity = getCartQty(product.id);
                 return (
                   <div className="product-card" key={`${product.id}-${quantity}`}>

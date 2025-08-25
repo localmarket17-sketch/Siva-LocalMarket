@@ -6,6 +6,7 @@ import API from '../../utils/api';
 import ProductFilter from '../../components/FilterSortPanel';
 import CategoryNavBar from '../../components/CategoryNavBar';
 import { useCart } from '../../contexts/CartContext';
+import { SearchContext } from '../../contexts/SearchContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import './CategoryPage.css';
 import axios from 'axios';
@@ -18,7 +19,7 @@ const CategoryPage = () => {
 
   const { cartItems, addToCart, removeFromCart, getCartQty, updateQuantity } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-
+  const { searchQuery } = useContext(SearchContext);
   const [categoryName, setCategoryName] = useState('');
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -123,52 +124,54 @@ const CategoryPage = () => {
         <div className="category-products">
           {filteredProducts.length > 0 ? (
             <div className="products-grid">
-              {filteredProducts.map(product => {
-                const quantity = getCartQty(product.id);
-                return (
-                  <div className="product-card" key={`${product.id}-${quantity}`}>
-                    <div className="image-container" onClick={() => navigate(`/product/${product.id}`)}>
-                      <img
-                        src={product.image || RImg}
-                        alt={product.title}
-                        onError={e => (e.target.src = RImg)}
-                        className="product-img"
-                      />
-                      <div className="more-overlay">+6 more</div>
+              {filteredProducts
+                .filter(product => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                .map(product => {
+                  const quantity = getCartQty(product.id);
+                  return (
+                    <div className="product-card" key={`${product.id}-${quantity}`}>
+                      <div className="image-container" onClick={() => navigate(`/product/${product.id}`)}>
+                        <img
+                          src={product.image || RImg}
+                          alt={product.title}
+                          onError={e => (e.target.src = RImg)}
+                          className="product-img"
+                        />
+                        <div className="more-overlay">+6 more</div>
 
-                      <div
-                        className={`wishlist-icon ${isInWishlist(product.id) ? 'active' : ''}`}
-                        onClick={(e) => toggleWishlist(e, product)}
-                      >
-                        {isInWishlist(product.id) ? '❤️' : '🤍'}
+                        <div
+                          className={`wishlist-icon ${isInWishlist(product.id) ? 'active' : ''}`}
+                          onClick={(e) => toggleWishlist(e, product)}
+                        >
+                          {isInWishlist(product.id) ? '❤️' : '🤍'}
+                        </div>
+                      </div>
+
+                      <h4 className="product-title">{product.title}</h4>
+                      <p className="product-price">₹{product.price}</p>
+                      <p className="free-delivery">Free Delivery</p>
+                      {product.tagline && <p className="product-tagline">{product.tagline}</p>}
+
+                      <div className="cart-control">
+                        {quantity === 0 ? (
+                          <button className="plus-icon" onClick={() => handleAdd(product)}>
+                            <Plus size={18} />
+                          </button>
+                        ) : (
+                          <div className="qty-control">
+                            <button onClick={() => handleRemove(product)}>
+                              <Minus size={16} />
+                            </button>
+                            <span>{quantity}</span>
+                            <button onClick={() => handleAdd(product)}>
+                              <Plus size={16} />
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
-
-                    <h4 className="product-title">{product.title}</h4>
-                    <p className="product-price">₹{product.price}</p>
-                    <p className="free-delivery">Free Delivery</p>
-                    {product.tagline && <p className="product-tagline">{product.tagline}</p>}
-
-                    <div className="cart-control">
-                      {quantity === 0 ? (
-                        <button className="plus-icon" onClick={() => handleAdd(product)}>
-                          <Plus size={18} />
-                        </button>
-                      ) : (
-                        <div className="qty-control">
-                          <button onClick={() => handleRemove(product)}>
-                            <Minus size={16} />
-                          </button>
-                          <span>{quantity}</span>
-                          <button onClick={() => handleAdd(product)}>
-                            <Plus size={16} />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           ) : (
             <p className="no-products">No products found.</p>
